@@ -1,0 +1,11 @@
+.App div.text-area{
+  display: flex;
+  flex-direction: column;
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+
+.App div.text-area textarea{
+  height: 50px;
+  width: 200px;
+}
