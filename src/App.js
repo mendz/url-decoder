@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import TextArea from './components/TextArea';
 import StatusMessage from './components/StatusMessage';
+import Button from './components/Button';
 
 class App extends Component {
   state = {
@@ -19,20 +20,12 @@ class App extends Component {
     });
   }
 
-  handleClickedURLsToDecode = () => {
-    if (this.state.urlsToDecode.length > 0) {
-      const decodedUrls = this.state.urlsToDecode.map(url => decodeURI(url));
-      this.setState({ decodedUrls });
-      this.setStatus();
-    } else {
-      this.setStatus('Failed to decode URLs, you have to insert at least one URL', true);
-    }
-  }
-
   handleOnChangeURLsToDecode = event => {
-    const text = event.target.value;
+    const urlsToDecode = event.target.value.split('\n');
+    const decodedUrls = urlsToDecode.map(url => decodeURI(url));
     this.setState({
-      urlsToDecode: text.split('\n'),
+      urlsToDecode,
+      decodedUrls
     });
     this.setStatus();
   }
@@ -64,14 +57,15 @@ class App extends Component {
             value={this.state.urlsToDecode.join('\n')}
             width={600} />
           <TextArea textareaPlaceholder='Copy the decoded URLs'
-            buttonText='Copy all decoded URLs'
             handleOnChange={() => { }}
-            buttonClick={this.handleClickedDecodedUrls}
             value={this.state.decodedUrls.join('\n')}
             readonly={true}
             width={430} />
         </div>
-        <button>Decode current tab URL</button>
+        <div className="buttons-container">
+          <button onClick={this.handleClickedDecodedUrls}>Copy all decoded URLs</button>
+          <button>Decode current tab URL</button>
+        </div>
         <StatusMessage message={this.state.status.message} error={this.state.status.error} />
       </div>
     );

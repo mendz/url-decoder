@@ -14,7 +14,7 @@ const TextArea = ({ textareaPlaceholder, buttonText, buttonClick, handleOnChange
         onChange={handleOnChange}
         value={value}
         readOnly={readonly}></textarea>
-      <button onClick={buttonClick}>{buttonText}</button>
+      {/* <button onClick={buttonClick}>{buttonText}</button> */}
     </div>
   )
 };

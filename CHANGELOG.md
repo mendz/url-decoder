@@ -3,6 +3,21 @@
 <!-- ## Released -->
 ## Unreleased
 
+## 2018-09-17
+
+### Removed
+
+- Button to decode the URLs.
+
+### Changed
+
+- Now simultaneously decode the URLs.
+- Move the "_Copy all decoded URLs_" button outside from the **TextArea**.
+
+### Added
+
+- A buttons container under the **TextArea** components.
+
 ## 2018-09-13
 
 ### Added
