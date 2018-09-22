@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import TextArea from './components/TextArea';
-import StatusMessage from './components/StatusMessage';
-import Button from './components/Button';
+import TextArea from '../components/TextArea';
+import StatusMessage from '../components/StatusMessage';
+import Button from '../components/Button';
 
 class App extends Component {
   state = {
