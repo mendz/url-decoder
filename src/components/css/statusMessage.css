@@ -1,0 +1,14 @@
+p.statusMessage {
+  background-color: aliceblue;
+  max-width: 500px;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+p.statusMessage.error {
+  color: #e75151;
+}
+
+p.statusMessage.succeed {
+  color: green;
+}

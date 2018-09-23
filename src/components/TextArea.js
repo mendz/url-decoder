@@ -1,22 +1,19 @@
 import React from 'react';
-
+import { selectText } from '../utils/text';
 import './css/textArea.css';
 
-const TextArea = ({ textareaPlaceholder, buttonText, buttonClick, handleOnChange, value, readonly, width }) => {
-  const inlineStyle = {
-    minWidth: width
-  }
-
+const TextArea = React.forwardRef(({ textareaPlaceholder, handleOnChange, value, readonly, doubleClickCopy }, decodedUrlsElementRef) => {
   return (
-    <div className="text-area">
-      <textarea style={inlineStyle}
+    <div className={`text-area-container${readonly ? ' readonly' : ''}`}>
+      <textarea
+        ref={decodedUrlsElementRef}
         placeholder={textareaPlaceholder}
         onChange={handleOnChange}
         value={value}
-        readOnly={readonly}></textarea>
-      {/* <button onClick={buttonClick}>{buttonText}</button> */}
+        readOnly={readonly}
+        onDoubleClick={doubleClickCopy && selectText}></textarea>
     </div>
   )
-};
+});
 
 export default TextArea;

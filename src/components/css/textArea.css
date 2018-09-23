@@ -1,11 +1,22 @@
-.App div.text-area{
+.App div.container {
+  padding: 20px;
+}
+
+.App div.text-area-container {
   display: flex;
   flex-direction: column;
-  margin-right: 15px;
   margin-bottom: 15px;
 }
 
-.App div.text-area textarea{
-  height: 50px;
-  width: 200px;
+.App div.text-area-container textarea {
+  min-height: 75px;
+  max-height: 230px;
+  min-width: 610px;
+  max-width: 610px;
+  background-color: rgb(183, 253, 255);
+  font-size: 1.2em;
+}
+
+.App div.text-area-container.readonly textarea {
+  background-color: #bfc9ff;
 }
