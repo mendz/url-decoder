@@ -56,9 +56,9 @@ class App extends Component {
           return;
         });
 
-        // copied succeed
-        this.setMessageStatus({ message: 'The decoded URL copied to your clipboard' });
-        selectText(this.decodedUrlsElementRef.current);
+      // copied succeed
+      this.setMessageStatus({ message: 'The decoded URL copied to your clipboard' });
+      selectText(this.decodedUrlsElementRef.current);
 
     } else {
       this.setMessageStatus({ message: 'Failed to copy to decoded URLs, you have to decode at least one URL', error: true });
@@ -66,6 +66,13 @@ class App extends Component {
   }
 
   handleCLickedDecodeCurrent = () => {
+
+    // To prevent the app crashing when working on localhost
+    if (!chrome.tabs) {
+      this.setMessageStatus({ message: 'There is an issue with the extension connection with the browser. Please try again later.', error: true })
+      return;
+    }
+
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
       // extract first value - tabs[0]
       const [currentTab] = tabs;
@@ -102,8 +109,7 @@ class App extends Component {
             handleOnChange={() => { }}
             value={this.state.decodedUrls.join('\n')}
             readonly={true}
-            ref={this.decodedUrlsElementRef}
-            doubleClickCopy={true}/>
+            ref={this.decodedUrlsElementRef} />
 
         </div>
 

@@ -1,8 +1,7 @@
 import React from 'react';
-import { selectText } from '../utils/text';
 import './css/textArea.css';
 
-const TextArea = React.forwardRef(({ textareaPlaceholder, handleOnChange, value, readonly, doubleClickCopy }, decodedUrlsElementRef) => {
+const TextArea = React.forwardRef(({ textareaPlaceholder, handleOnChange, value, readonly }, decodedUrlsElementRef) => {
   return (
     <div className={`text-area-container${readonly ? ' readonly' : ''}`}>
       <textarea
@@ -10,8 +9,7 @@ const TextArea = React.forwardRef(({ textareaPlaceholder, handleOnChange, value,
         placeholder={textareaPlaceholder}
         onChange={handleOnChange}
         value={value}
-        readOnly={readonly}
-        onDoubleClick={doubleClickCopy && selectText}></textarea>
+        readOnly={readonly}></textarea>
     </div>
   )
 });
