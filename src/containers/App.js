@@ -5,9 +5,14 @@ import './App.css';
 import TextArea from '../components/TextArea';
 import StatusMessage from '../components/StatusMessage';
 import Button from '../components/Button';
+import { urlsToDecodeKey, decodedUrlsKey } from '../utils/chromeStorageKeys';
 import { decodeURLs, arrayHaveInvalidUrl, selectText, loadFromStorage, saveToStorage, clearStorage } from '../utils';
 
-// TODO: Add an option to save the URLs in chrome storage, so they won't disappear every time the popup closed.
+/*
+  TODO: change to css modules
+  TODO: check it there a need to change to react hooks
+  TODO: add testing
+*/
 
 class App extends Component {
   decodedUrlsElementRef = React.createRef();
@@ -21,44 +26,27 @@ class App extends Component {
     }
   }
 
-
-  setUrls = ({ urlsToDecode, decodedUrls }) => {
-    console.log('setUrls', urlsToDecode, decodedUrls)
-
-    urlsToDecode = urlsToDecode || [];
-    decodedUrls = decodedUrls || [];
-
-    if (chrome.storage) {
-      saveToStorage('urlsToDecode', urlsToDecode);
-      saveToStorage('decodedUrls', decodedUrls);
-    }
-
-    this.setState({
-      urlsToDecode,
-      decodedUrls
-    });
-  }
-
   async componentDidMount() {
     if (chrome.storage) {
-      const urlToDecodePromise = loadFromStorage('urlToDecode');
-      const decodedUrlsPromise = loadFromStorage('decodedUrls');
-      const [urlToDecode, decodedUrls] = await Promise.all([urlToDecodePromise, decodedUrlsPromise]);
-      this.setUrls({ urlToDecode, decodedUrls });
+      const urlToDecodePromise = loadFromStorage(urlsToDecodeKey);
+      const decodedUrlsPromise = loadFromStorage(decodedUrlsKey);
+      const [urlsToDecode, decodedUrls] = await Promise.all([urlToDecodePromise, decodedUrlsPromise]);
+
+      this.setState({
+        urlsToDecode,
+        decodedUrls
+      });
     }
   }
 
-  async componentWillUnmount() {
+  componentDidUpdate() {
     if (chrome.storage) {
-      const urlToDecodePromise = loadFromStorage('urlToDecode');
-      const decodedUrlsPromise = loadFromStorage('decodedUrls');
-      const [urlToDecode, decodedUrls] = await Promise.all([urlToDecodePromise, decodedUrlsPromise]);
-      this.setUrls({ urlToDecode, decodedUrls });
+      saveToStorage(urlsToDecodeKey, this.state.urlsToDecode);
+      saveToStorage(decodedUrlsKey, this.state.decodedUrls);
     }
   }
 
   clearStorageUrls = () => {
-
     if (chrome.storage) {
       clearStorage();
     }
@@ -90,9 +78,6 @@ class App extends Component {
       urlsToDecode,
       decodedUrls
     });
-
-    saveToStorage('urlsToDecode', this.state.urlsToDecode);
-    saveToStorage('decodedUrls', this.state.decodedUrls);
 
     this.setMessageStatus({ decodedUrls });
   }
