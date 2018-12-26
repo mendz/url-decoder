@@ -5,8 +5,7 @@ import './App.css';
 import TextArea from '../components/TextArea';
 import StatusMessage from '../components/StatusMessage';
 import Button from '../components/Button';
-import { decodeURLs, arrayHaveInvalidUrl } from '../utils/urls';
-import { selectText } from '../utils/text';
+import { decodeURLs, arrayHaveInvalidUrl, selectText, loadFromStorage, saveToStorage, clearStorage } from '../utils';
 
 // TODO: Add an option to save the URLs in chrome storage, so they won't disappear every time the popup closed.
 
@@ -20,6 +19,54 @@ class App extends Component {
       message: '',
       error: false
     }
+  }
+
+
+  setUrls = ({ urlsToDecode, decodedUrls }) => {
+    console.log('setUrls', urlsToDecode, decodedUrls)
+
+    urlsToDecode = urlsToDecode || [];
+    decodedUrls = decodedUrls || [];
+
+    if (chrome.storage) {
+      saveToStorage('urlsToDecode', urlsToDecode);
+      saveToStorage('decodedUrls', decodedUrls);
+    }
+
+    this.setState({
+      urlsToDecode,
+      decodedUrls
+    });
+  }
+
+  async componentDidMount() {
+    if (chrome.storage) {
+      const urlToDecodePromise = loadFromStorage('urlToDecode');
+      const decodedUrlsPromise = loadFromStorage('decodedUrls');
+      const [urlToDecode, decodedUrls] = await Promise.all([urlToDecodePromise, decodedUrlsPromise]);
+      this.setUrls({ urlToDecode, decodedUrls });
+    }
+  }
+
+  async componentWillUnmount() {
+    if (chrome.storage) {
+      const urlToDecodePromise = loadFromStorage('urlToDecode');
+      const decodedUrlsPromise = loadFromStorage('decodedUrls');
+      const [urlToDecode, decodedUrls] = await Promise.all([urlToDecodePromise, decodedUrlsPromise]);
+      this.setUrls({ urlToDecode, decodedUrls });
+    }
+  }
+
+  clearStorageUrls = () => {
+
+    if (chrome.storage) {
+      clearStorage();
+    }
+
+    this.setState({
+      urlsToDecode: [],
+      decodedUrls: []
+    });
   }
 
   setMessageStatus = ({ message = '', error = false, decodedUrls = null }) => {
@@ -43,6 +90,9 @@ class App extends Component {
       urlsToDecode,
       decodedUrls
     });
+
+    saveToStorage('urlsToDecode', this.state.urlsToDecode);
+    saveToStorage('decodedUrls', this.state.decodedUrls);
 
     this.setMessageStatus({ decodedUrls });
   }
@@ -98,6 +148,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1>URL Decoder</h1>
+        <Button clicked={this.clearStorageUrls} innerText='Clear' />
         <div className="container">
 
           <TextArea textareaPlaceholder='Enter one or more URLs to decode'

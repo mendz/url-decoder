@@ -9,8 +9,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && node scripts/replace-inline-script.js",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+    "eject": "react-scripts eject",
+    "build-fix": "node scripts/replace-inline-script.js"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
