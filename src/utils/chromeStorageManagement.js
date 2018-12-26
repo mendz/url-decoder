@@ -7,12 +7,11 @@
  */
 const saveToStorage = (key, value) => {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.set({ [key]: value }, data => {
-      console.log('data', data);
+    chrome.storage.sync.set({ [key]: value }, () => {
       const err = chrome.runtime.lastError;
       if (err) reject(err);
 
-      resolve(data);
+      resolve(true);
     });
   });
 };
@@ -27,11 +26,7 @@ const loadFromStorage = (key) => {
       const err = chrome.runtime.lastError;
       if (err) reject(err);
 
-      // if (!data) {
-      //   resolve(null);
-      // }
-
-      resolve(data);
+      resolve(data[key]);
     });
   });
 };
