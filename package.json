@@ -9,12 +9,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && node scripts/replace-inline-script.js",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
+    "build-react": "react-scripts build",
     "build-fix": "node scripts/replace-inline-script.js",
+    "build": "npm run build-react && npm run build-fix",
     "zip-build": "node scripts/zip-build.js",
-    "prod": "npm run build && npm run zip-build"
+    "prod": "npm run build && npm run zip-build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "browserslist": [
     ">0.2%",
