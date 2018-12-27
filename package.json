@@ -9,11 +9,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && node scripts/replace-inline-script.js && node scripts/copy-icons.js",
+    "build": "react-scripts build && node scripts/replace-inline-script.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "build-fix": "node scripts/replace-inline-script.js",
-    "move-icons": "node scripts/copy-icons.js",
     "zip-build": "node scripts/zip-build.js",
     "prod": "npm run build && npm run zip-build"
   },
