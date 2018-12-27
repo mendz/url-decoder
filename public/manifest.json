@@ -1,5 +1,5 @@
 {
-  "name": "URLs Decoder - decode URLs with unique characters",
+  "name": "URLs Decoder with unique characters",
   "short_name": "URLs Decoder",
   "description": "Simultaneously decodes the current tab URL or decode multiple URLs by pasting them to the text area.",
   "version": "1.0.0",
