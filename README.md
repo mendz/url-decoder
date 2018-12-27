@@ -2,7 +2,7 @@
 
 The extension simultaneously decodes the current tab URL or decode multiple URLs by pasting them to the text area and let you copy the result with one button.
 
-It will remember the last decoded URLs, you can clear them using the "Clear" button.
+It will remember the last decoded URLs, you can clear them using the "**Clear**" button.
 
 ---
 
