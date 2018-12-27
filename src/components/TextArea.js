@@ -8,7 +8,7 @@ const TextArea = React.forwardRef(({ textareaPlaceholder, handleOnChange, value,
         ref={decodedUrlsElementRef}
         placeholder={textareaPlaceholder}
         onChange={handleOnChange}
-        value={value}
+        value={value.join('\n')}
         readOnly={readonly}></textarea>
     </div>
   )

@@ -33,8 +33,8 @@ class App extends Component {
       const [urlsToDecode, decodedUrls] = await Promise.all([urlToDecodePromise, decodedUrlsPromise]);
 
       this.setState({
-        urlsToDecode,
-        decodedUrls
+        urlsToDecode: urlsToDecode || [],
+        decodedUrls: decodedUrls || []
       });
     }
   }
@@ -140,10 +140,10 @@ class App extends Component {
             buttonText='Decode'
             handleOnChange={this.handleOnChangeURLsToDecode}
             buttonClick={this.handleClickedURLsToDecode}
-            value={this.state.urlsToDecode.join('\n')} />
+            value={this.state.urlsToDecode} />
           <TextArea textareaPlaceholder='Decoded URLs'
             handleOnChange={() => { }}
-            value={this.state.decodedUrls.join('\n')}
+            value={this.state.decodedUrls}
             readonly={true}
             ref={this.decodedUrlsElementRef} />
 
