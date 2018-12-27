@@ -9,15 +9,19 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && node scripts/replace-inline-script.js",
+    "build": "react-scripts build && node scripts/replace-inline-script.js && node scripts/copy-icons.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "build-fix": "node scripts/replace-inline-script.js"
+    "build-fix": "node scripts/replace-inline-script.js",
+    "move-icons": "node scripts/copy-icons.js"
   },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "fs-extra": "^7.0.1"
+  }
 }
