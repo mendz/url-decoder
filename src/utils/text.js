@@ -15,4 +15,13 @@ const selectText = element => {
   window.getSelection().addRange(range);
 };
 
-export { selectText };
+const selectLineTextArea = event => {
+  const selectedText = window.getSelection().toString();
+  const textAreaLines = event.target.value.split('\n');
+  const selectedLine = textAreaLines.find(line => line.includes(selectText));
+  console.log('selectedText', selectedText);
+  console.log('textAreaLines', textAreaLines);
+  console.log('selectedLine', selectedLine);
+};
+
+export { selectText, selectLineTextArea };

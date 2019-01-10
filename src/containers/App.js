@@ -6,7 +6,7 @@ import TextArea from '../components/TextArea';
 import StatusMessage from '../components/StatusMessage';
 import Button from '../components/Button';
 import { urlsToDecodeKey, decodedUrlsKey } from '../utils/chromeStorageKeys';
-import { decodeURLs, arrayHaveInvalidUrl, selectText, loadFromStorage, saveToStorage, clearStorage } from '../utils';
+import { decodeURLs, arrayHaveInvalidUrl, selectText, selectLineTextArea, loadFromStorage, saveToStorage, clearStorage } from '../utils';
 
 /*
   TODO: change to css modules
@@ -145,6 +145,7 @@ class App extends Component {
             handleOnChange={() => { }}
             value={this.state.decodedUrls}
             readonly={true}
+            doubleClick={selectLineTextArea}
             ref={this.decodedUrlsElementRef} />
 
         </div>
