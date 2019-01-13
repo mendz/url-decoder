@@ -16,12 +16,29 @@ const selectText = element => {
 };
 
 const selectLineTextArea = event => {
+  const textAreaValue = event.target.value;
   const selectedText = window.getSelection().toString();
-  const textAreaLines = event.target.value.split('\n');
-  const selectedLine = textAreaLines.find(line => line.includes(selectText));
-  console.log('selectedText', selectedText);
-  console.log('textAreaLines', textAreaLines);
-  console.log('selectedLine', selectedLine);
+  const textAreaLines = textAreaValue.split('\n');
+  const selectedLine = textAreaLines.find(line => line.includes(selectedText));
+
+  let startPosition = 0;
+  let endPosition = textAreaValue.length;
+
+  for (const line of textAreaLines) {
+    if (line === selectedLine) {
+      break;
+    }
+    startPosition += line.length + 1;
+  }
+
+  endPosition = selectedLine.length + startPosition;
+
+  window.getSelection().removeAllRanges();
+
+  const textArea = event.target;
+  textArea.focus();
+  textArea.selectionStart = startPosition;
+  textArea.selectionEnd = endPosition;
 };
 
 export { selectText, selectLineTextArea };
