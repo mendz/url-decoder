@@ -9,8 +9,9 @@
 }
 
 .App div.text-area-container textarea {
-  min-height: 75px;
-  max-height: 230px;
+  /* min-height: 75px; */
+  resize: none;
+  height: 144px;
   min-width: 610px;
   max-width: 610px;
   background-color: rgb(183, 253, 255);
