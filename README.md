@@ -4,6 +4,8 @@ The extension simultaneously decodes the current tab URL or decode multiple URLs
 
 It will remember the last decoded URLs, you can clear them using the "**Clear**" button.
 
+Double click on a decoded URL will select the whole line.
+
 ---
 
 Screenshots:
