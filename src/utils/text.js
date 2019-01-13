@@ -17,7 +17,18 @@ const selectText = element => {
 
 const selectLineTextArea = event => {
   const textAreaValue = event.target.value;
-  const selectedText = window.getSelection().toString();
+  // TODO: check if this function (`modify`) changed in the future because currently is "Non-standard" - https://developer.mozilla.org/en-US/docs/Web/API/Selection/modify
+  // I am using the "modify" method because I ran into a problem when the user select word that also appears in another line it will cause the selection to be on the wrong line. Therefore with "modify", I could check what is the whole line, and not only one word.
+
+  // the text before the selected word
+  window.getSelection().modify('extend','backward', 'lineboundary');
+  const selectTextBackward= window.getSelection().toString();
+
+  // the rest of the text in line
+  window.getSelection().modify('extend','forward', 'lineboundary');
+  const selectTextForward = window.getSelection().toString();
+
+  const selectedText = selectTextBackward + selectTextForward;
   const textAreaLines = textAreaValue.split('\n');
   const selectedLine = textAreaLines.find(line => line.includes(selectedText));
 
