@@ -1,6 +1,6 @@
 {
   "name": "urls-decoder",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "dependencies": {
     "react": "^16.7.0",
@@ -13,6 +13,7 @@
     "build-fix": "node scripts/replace-inline-script.js",
     "build": "npm run build-react && npm run build-fix",
     "zip-build": "node scripts/zip-build.js",
+    "update-ver": "node scripts/update-version.js",
     "prod": "npm run build && npm run zip-build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
