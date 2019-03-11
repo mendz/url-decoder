@@ -1,7 +1,7 @@
 /* globals chrome */
 
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.module.css';
 import TextArea from '../components/TextArea';
 import StatusMessage from '../components/StatusMessage';
 import Button from '../components/Button';
@@ -9,7 +9,6 @@ import { urlsToDecodeKey, decodedUrlsKey } from '../utils/chromeStorageKeys';
 import { decodeURLs, arrayHaveInvalidUrl, selectText, selectLineTextArea, loadFromStorage, saveToStorage, clearStorage } from '../utils';
 
 /*
-  TODO: change to css modules
   TODO: check it there a need to change to react hooks
   TODO: add testing
 */
@@ -131,10 +130,10 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className={classes.App}>
         <h1>URL Decoder</h1>
         <Button clicked={this.clearStorageUrls} innerText='Clear' />
-        <div className="container">
+        <div className={classes.container}>
 
           <TextArea textareaPlaceholder='Enter one or more URLs to decode'
             buttonText='Decode'
@@ -150,7 +149,7 @@ class App extends Component {
 
         </div>
 
-        <div className="buttons-container">
+        <div className={classes['buttons-container']}>
           <Button clicked={this.handleClickedCopiedDecodedUrls} innerText='Copy all decoded URLs' />
           <Button clicked={this.handleCLickedDecodeCurrent} innerText='Decode current tab URL' />
         </div>

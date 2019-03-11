@@ -1,9 +1,9 @@
 import React from 'react';
 
-import './css/button.css';
+import classes from './css/Button.module.css';
 
 const Button = ({ innerText, clicked }) => {
-   return <button className='Button' onClick={clicked}>{innerText}</button>
+   return <button className={classes.button} onClick={clicked}>{innerText}</button>
 };
 
 export default Button;

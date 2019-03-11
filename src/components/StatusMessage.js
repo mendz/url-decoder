@@ -1,12 +1,12 @@
 import React from 'react';
-import './css/statusMessage.css';
+import classes from './css/StatusMessage.module.css';
 
 const StatusMessage = ({ message, error }) => {
   const inlineStyle = {padding: '0'};
-  let classColor = 'succeed';
+  let classColor = classes.succeed;
 
   if (error) {
-    classColor = 'error';
+    classColor = classes.error;
   }
 
   if (message) {
@@ -14,7 +14,7 @@ const StatusMessage = ({ message, error }) => {
   }
 
   return (
-    <p className={`statusMessage ${classColor}`} style={inlineStyle}>{message}</p>
+    <p className={`${classes.statusMessage} ${classColor}`} style={inlineStyle}>{message}</p>
   )
 }
 
