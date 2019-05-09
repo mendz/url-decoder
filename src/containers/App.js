@@ -153,13 +153,17 @@ class App extends Component {
       </div>
     );
 
+    const { message, error } = this.state.status;
+    const statusMessage = message ?
+      (<StatusMessage message={message} error={error} />) : null;
+
     return (
       <div className={classes.App}>
         <h1>URL Decoder</h1>
         <Button clicked={this.clearStorageUrls}>Clear</Button>
         {textareas}
         {buttons}
-        <StatusMessage message={this.state.status.message} error={this.state.status.error} />
+        {statusMessage}
       </div>
     );
   }
