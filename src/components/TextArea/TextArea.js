@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import classes from './TextArea.module.css';
 
 const TextArea = React.forwardRef(({ textareaPlaceholder, handleOnChange, value, readonly, doubleClick }, decodedUrlsElementRef) => {
@@ -15,5 +17,13 @@ const TextArea = React.forwardRef(({ textareaPlaceholder, handleOnChange, value,
     </div>
   )
 });
+
+TextArea.propTypes = {
+  textareaPlaceholder: PropTypes.string,
+  handleOnChange: PropTypes.func,
+  value: PropTypes.arrayOf(PropTypes.string),
+  readonly: PropTypes.bool,
+  doubleClick: PropTypes.func,
+}
 
 export default TextArea;
