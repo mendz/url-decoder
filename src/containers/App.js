@@ -14,6 +14,7 @@ import { decodeURLs, arrayHaveInvalidUrl, selectText, selectLineTextArea, loadFr
 */
 
 class App extends Component {
+  // this ref is needed for the text selection in the decoded URLs textarea
   decodedUrlsElementRef = React.createRef();
 
   state = {
