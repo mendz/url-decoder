@@ -1,5 +1,5 @@
 import React from 'react';
-import classes from './css/StatusMessage.module.css';
+import classes from './StatusMessage.module.css';
 
 const StatusMessage = ({ message, error }) => {
   const inlineStyle = {padding: '0'};

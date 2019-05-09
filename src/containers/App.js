@@ -2,9 +2,9 @@
 
 import React, { Component } from 'react';
 import classes from './App.module.css';
-import TextArea from '../components/TextArea';
-import StatusMessage from '../components/StatusMessage';
-import Button from '../components/Button';
+import TextArea from '../components/TextArea/TextArea';
+import StatusMessage from '../components/StatusMessage/StatusMessage';
+import Button from '../components/Button/Button';
 import { urlsToDecodeKey, decodedUrlsKey } from '../utils/chromeStorageKeys';
 import { decodeURLs, arrayHaveInvalidUrl, selectText, selectLineTextArea, loadFromStorage, saveToStorage, clearStorage } from '../utils';
 
@@ -129,31 +129,36 @@ class App extends Component {
   }
 
   render() {
+
+    const textareas = (
+      <div className={classes.Container}>
+        <TextArea textareaPlaceholder='Enter one or more URLs to decode'
+          buttonText='Decode'
+          handleOnChange={this.handleOnChangeURLsToDecode}
+          buttonClick={this.handleClickedURLsToDecode}
+          value={this.state.urlsToDecode} />
+        <TextArea textareaPlaceholder='Decoded URLs'
+          handleOnChange={() => { }}
+          value={this.state.decodedUrls}
+          readonly={true}
+          doubleClick={selectLineTextArea}
+          ref={this.decodedUrlsElementRef} />
+      </div>
+    );
+
+    const buttons = (
+      <div className={classes.ButtonsContainer}>
+        <Button clicked={this.handleClickedCopiedDecodedUrls}>Copy all decoded URLs</Button>
+        <Button clicked={this.handleCLickedDecodeCurrent}>Decode current tab URL</Button>
+      </div>
+    );
+
     return (
       <div className={classes.App}>
         <h1>URL Decoder</h1>
-        <Button clicked={this.clearStorageUrls} innerText='Clear' />
-        <div className={classes.container}>
-
-          <TextArea textareaPlaceholder='Enter one or more URLs to decode'
-            buttonText='Decode'
-            handleOnChange={this.handleOnChangeURLsToDecode}
-            buttonClick={this.handleClickedURLsToDecode}
-            value={this.state.urlsToDecode} />
-          <TextArea textareaPlaceholder='Decoded URLs'
-            handleOnChange={() => { }}
-            value={this.state.decodedUrls}
-            readonly={true}
-            doubleClick={selectLineTextArea}
-            ref={this.decodedUrlsElementRef} />
-
-        </div>
-
-        <div className={classes['buttons-container']}>
-          <Button clicked={this.handleClickedCopiedDecodedUrls} innerText='Copy all decoded URLs' />
-          <Button clicked={this.handleCLickedDecodeCurrent} innerText='Decode current tab URL' />
-        </div>
-
+        <Button clicked={this.clearStorageUrls}>Clear</Button>
+        {textareas}
+        {buttons}
         <StatusMessage message={this.state.status.message} error={this.state.status.error} />
       </div>
     );

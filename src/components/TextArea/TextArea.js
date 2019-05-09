@@ -1,5 +1,5 @@
 import React from 'react';
-import classes from './css/TextArea.module.css';
+import classes from './TextArea.module.css';
 
 const TextArea = React.forwardRef(({ textareaPlaceholder, handleOnChange, value, readonly, doubleClick }, decodedUrlsElementRef) => {
   const readOnlyClass = readonly ? ` ${classes.readonly}` : '';
