@@ -27,7 +27,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    if (chrome.storage) {
+    if (chrome && chrome.storage) {
       const urlToDecodePromise = loadFromStorage(urlsToDecodeKey);
       const decodedUrlsPromise = loadFromStorage(decodedUrlsKey);
       const [urlsToDecode, decodedUrls] = await Promise.all([urlToDecodePromise, decodedUrlsPromise]);
@@ -40,14 +40,14 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    if (chrome.storage) {
+    if (chrome && chrome.storage) {
       saveToStorage(urlsToDecodeKey, this.state.urlsToDecode);
       saveToStorage(decodedUrlsKey, this.state.decodedUrls);
     }
   }
 
   clearStorageUrls = () => {
-    if (chrome.storage) {
+    if (chrome && chrome.storage) {
       clearStorage();
     }
 
@@ -103,7 +103,7 @@ class App extends Component {
   handleCLickedDecodeCurrent = () => {
 
     // To prevent the app crashing when working on localhost
-    if (!chrome.tabs) {
+    if (chrome && !chrome.tabs) {
       this.setMessageStatus({ message: 'There is an issue with the extension connection with the browser. Please try again later.', error: true })
       return;
     }

@@ -1,9 +1,19 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { shallow } from 'enzyme';
 import App from './App';
+import StatusMessage from '../components/StatusMessage/StatusMessage';
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+describe('<App />', () => {
+  let wrapper;
+
+  // before its test
+  beforeEach(() => {
+     wrapper = shallow(<App />);
+     global.chrome = null;
+  });
+
+  it('should render <StatusMessage /> if have message', () => {
+    wrapper.setState({ status: { message: 'test' }});
+    expect(wrapper.find(StatusMessage)).toHaveLength(1);
+  });
 });
