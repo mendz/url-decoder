@@ -1,63 +1,64 @@
 /* globals chrome */
 
-import React, { Component } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import classes from './App.module.css';
 import TextArea from '../components/TextArea/TextArea';
 import StatusMessage from '../components/StatusMessage/StatusMessage';
 import Button from '../components/Button/Button';
 import { urlsToDecodeKey, decodedUrlsKey } from '../utils/chromeStorageKeys';
-import { decodeURLs, arrayHaveInvalidUrl, selectText, selectLineTextArea, loadFromStorage, saveToStorage, clearStorage } from '../utils';
+import {
+  decodeURLs,
+  arrayHaveInvalidUrl,
+  selectText,
+  selectLineTextArea,
+  loadFromStorage,
+  saveToStorage,
+  clearStorage
+} from '../utils';
 
-/*
-  TODO: check it there a need to change to react hooks
-  TODO: add testing
-*/
-
-class App extends Component {
+const App = () => {
   // this ref is needed for the text selection in the decoded URLs textarea
-  decodedUrlsElementRef = React.createRef();
+  const decodedUrlsElementRef = useRef(null);
 
-  state = {
-    urlsToDecode: [],
-    decodedUrls: [],
-    status: {
-      message: '',
-      error: false
+  const [urlsToDecode, setUrlsToDecode] = useState([]);
+  const [decodedUrls, setDecodedUrls] = useState([]);
+  const [status, setStatus] = useState({
+    message: '',
+    error: false
+  });
+
+  // componentDidMount
+  useEffect(() => {
+    const asyncLoadFromStorage = async () => {
+      if (chrome && chrome.storage) {
+        const urlToDecodePromise = loadFromStorage(urlsToDecodeKey);
+        const decodedUrlsPromise = loadFromStorage(decodedUrlsKey);
+        const [urlsToDecode, decodedUrls] = await Promise.all([urlToDecodePromise, decodedUrlsPromise]);
+
+        setUrlsToDecode(urlsToDecode || []);
+        setDecodedUrls(decodedUrls || []);
+      }
     }
-  }
+    asyncLoadFromStorage();
+  }, []);
 
-  async componentDidMount() {
+  // componentDidUpdate
+  useEffect(() => {
     if (chrome && chrome.storage) {
-      const urlToDecodePromise = loadFromStorage(urlsToDecodeKey);
-      const decodedUrlsPromise = loadFromStorage(decodedUrlsKey);
-      const [urlsToDecode, decodedUrls] = await Promise.all([urlToDecodePromise, decodedUrlsPromise]);
-
-      this.setState({
-        urlsToDecode: urlsToDecode || [],
-        decodedUrls: decodedUrls || []
-      });
+      saveToStorage(urlsToDecodeKey, urlsToDecode);
+      saveToStorage(decodedUrlsKey, decodedUrls);
     }
-  }
+  }, [urlsToDecode, decodedUrls]);
 
-  componentDidUpdate() {
-    if (chrome && chrome.storage) {
-      saveToStorage(urlsToDecodeKey, this.state.urlsToDecode);
-      saveToStorage(decodedUrlsKey, this.state.decodedUrls);
-    }
-  }
-
-  clearStorageUrls = () => {
+  const clearStorageUrls = () => {
     if (chrome && chrome.storage) {
       clearStorage();
     }
-
-    this.setState({
-      urlsToDecode: [],
-      decodedUrls: []
-    });
+    setUrlsToDecode([]);
+    setDecodedUrls([]);
   }
 
-  setMessageStatus = ({ message = '', error = false, decodedUrls = null }) => {
+  const setMessageStatus = ({ message = '', error = false, decodedUrls = null }) => {
     let status = { message, error };
 
     if (decodedUrls && arrayHaveInvalidUrl(decodedUrls)) {
@@ -67,44 +68,44 @@ class App extends Component {
       }
     }
 
-    this.setState({ status });
+    setStatus(status);
   }
 
-  handleOnChangeURLsToDecode = event => {
-    const urlsToDecode = event.target.value.split('\n');
-    const decodedUrls = decodeURLs(urlsToDecode);
+  const handleOnChangeURLsToDecode = event => {
+    const onChangeUrlsToDecode = event.target.value.split('\n');
+    const onChangeDecodedUrls = decodeURLs(onChangeUrlsToDecode);
 
-    this.setState({
-      urlsToDecode,
-      decodedUrls
-    });
+    setUrlsToDecode(onChangeUrlsToDecode);
+    setDecodedUrls(onChangeDecodedUrls);
 
-    this.setMessageStatus({ decodedUrls });
+    setMessageStatus({ onChangeDecodedUrls });
   }
 
-  handleClickedCopiedDecodedUrls = async () => {
-    if (this.state.decodedUrls.length > 0) {
-      await navigator.clipboard.writeText(this.state.decodedUrls.join('\n'))
+  const handleClickedCopiedDecodedUrls = async () => {
+    if (decodedUrls.length > 0) {
+      await navigator.clipboard.writeText(decodedUrls.join('\n'))
         .catch(err => {
-          this.setMessageStatus({ message: 'Failed to copy the decoded URLs', error: true });
-          console.error(`Failed to copy - '${this.state.decodedUrls}' to the clipboard!\n${err}`);
+          setMessageStatus({ message: 'Failed to copy the decoded URLs', error: true });
+          console.error(`Failed to copy - '${decodedUrls}' to the clipboard!\n${err}`);
           return;
         });
 
       // copied succeed
-      this.setMessageStatus({ message: 'The decoded URL copied to your clipboard' });
-      selectText(this.decodedUrlsElementRef.current);
+      setMessageStatus({ message: 'The decoded URL copied to your clipboard' });
+      selectText(decodedUrlsElementRef.current);
 
     } else {
-      this.setMessageStatus({ message: 'Failed to copy to decoded URLs, you have to decode at least one URL', error: true });
+      setMessageStatus({ message: 'Failed to copy to decoded URLs, you have to decode at least one URL', error: true });
     }
   }
 
-  handleCLickedDecodeCurrent = () => {
-
+  const handleCLickedDecodeCurrent = () => {
     // To prevent the app crashing when working on localhost
     if (chrome && !chrome.tabs) {
-      this.setMessageStatus({ message: 'There is an issue with the extension connection with the browser. Please try again later.', error: true })
+      setMessageStatus({
+        message: 'There is an issue with the extension connection with the browser. Please try again later.',
+        error: true
+      });
       return;
     }
 
@@ -112,62 +113,59 @@ class App extends Component {
       // extract first value - tabs[0]
       const [currentTab] = tabs;
 
-      // check that the URL is not already exists in this.state.urlsToDecode
-      if (!this.state.urlsToDecode.includes(currentTab.url)) {
-        const urlsToDecode = [...this.state.urlsToDecode, currentTab.url].filter(url => url.trim().length > 0);
-        const decodedUrls = decodeURLs(urlsToDecode);
+      // check that the URL is not already exists in state urlsToDecode
+      if (!urlsToDecode.includes(currentTab.url)) {
+        const currentUrlsToDecode = [...urlsToDecode, currentTab.url].filter(url => url.trim().length > 0);
+        const currentDecodedUrls = decodeURLs(currentUrlsToDecode);
 
-        this.setState({
-          urlsToDecode,
-          decodedUrls
-        });
+        setUrlsToDecode(currentUrlsToDecode);
+        setDecodedUrls(currentDecodedUrls);
 
-        this.setMessageStatus({ message: 'Decoded current tab URL', decodedUrls });
+        setMessageStatus({ message: 'Decoded current tab URL', decodedUrls });
       } else {
-        this.setMessageStatus({ message: 'The current tab URL is already in text area with the URLs to decode', error: true });
+        setMessageStatus({
+          message: 'The current tab URL is already in text area with the URLs to decode',
+          error: true
+        });
       }
     });
   }
-
-  render() {
 
     const textareas = (
       <div className={classes.Container}>
         <TextArea textareaPlaceholder='Enter one or more URLs to decode'
           buttonText='Decode'
-          handleOnChange={this.handleOnChangeURLsToDecode}
-          buttonClick={this.handleClickedURLsToDecode}
-          value={this.state.urlsToDecode} />
+          handleOnChange={handleOnChangeURLsToDecode}
+          value={urlsToDecode} />
         <TextArea textareaPlaceholder='Decoded URLs'
           handleOnChange={() => { }}
-          value={this.state.decodedUrls}
+          value={decodedUrls}
           readonly={true}
           doubleClick={selectLineTextArea}
-          ref={this.decodedUrlsElementRef} />
+          ref={decodedUrlsElementRef} />
       </div>
     );
 
     const buttons = (
       <div className={classes.ButtonsContainer}>
-        <Button clicked={this.handleClickedCopiedDecodedUrls}>Copy all decoded URLs</Button>
-        <Button clicked={this.handleCLickedDecodeCurrent}>Decode current tab URL</Button>
+        <Button clicked={handleClickedCopiedDecodedUrls}>Copy all decoded URLs</Button>
+        <Button clicked={handleCLickedDecodeCurrent}>Decode current tab URL</Button>
       </div>
     );
 
-    const { message, error } = this.state.status;
+    const { message, error } = status;
     const statusMessage = message ?
       (<StatusMessage message={message} error={error} />) : null;
 
     return (
       <div className={classes.App}>
         <h1>URL Decoder</h1>
-        <Button clicked={this.clearStorageUrls}>Clear</Button>
+        <Button clicked={clearStorageUrls}>Clear</Button>
         {textareas}
         {buttons}
         {statusMessage}
       </div>
     );
-  }
 }
 
 export default App;
