@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import App from './App';
 import StatusMessage from '../components/StatusMessage/StatusMessage';
 
+// FIXME: The test is now working due changed to hooks.
 describe('<App />', () => {
   let wrapper;
 
