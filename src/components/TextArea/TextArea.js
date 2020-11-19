@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import classes from "./TextArea.module.css";
+import classes from './TextArea.module.css';
 
 const TextArea = React.forwardRef(
   (
@@ -13,9 +13,9 @@ const TextArea = React.forwardRef(
       doubleClick,
       style,
     },
-    decodedUrlsElementRef
+    decodedUrlsElementRef,
   ) => {
-    const readOnlyClass = readonly ? ` ${classes.readonly}` : "";
+    const readOnlyClass = readonly ? ` ${classes.readonly}` : '';
     return (
       <div className={`${classes.container}${readOnlyClass}`} style={style}>
         <textarea
@@ -23,12 +23,12 @@ const TextArea = React.forwardRef(
           placeholder={textareaPlaceholder}
           onChange={handleOnChange}
           onDoubleClick={doubleClick}
-          value={value.join("\n")}
+          value={value.join('\n')}
           readOnly={readonly}
         ></textarea>
       </div>
     );
-  }
+  },
 );
 
 TextArea.propTypes = {

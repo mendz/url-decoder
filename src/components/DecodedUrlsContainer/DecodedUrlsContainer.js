@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
-import { useToggle, selectLineTextArea } from "../../utils";
-import Button from "../Button/Button";
-import TextArea from "../TextArea/TextArea";
-import PropTypes from "prop-types";
+import React from 'react';
+import styled from 'styled-components';
+import { useToggle, selectLineTextArea } from '../../utils';
+import Button from '../Button/Button';
+import TextArea from '../TextArea/TextArea';
+import PropTypes from 'prop-types';
 
 const Container = styled.div`
   margin-bottom: 15px;
@@ -79,7 +79,7 @@ const DecodedUrlsContainer = React.forwardRef(
         </Button>
       </Container>
     );
-  }
+  },
 );
 
 DecodedUrlsContainer.propTypes = {

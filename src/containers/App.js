@@ -1,12 +1,12 @@
 /* globals chrome */
 
-import React, { useState, useEffect, useRef } from "react";
-import classes from "./App.module.css";
-import TextArea from "../components/TextArea/TextArea";
-import StatusMessage from "../components/StatusMessage/StatusMessage";
-import Button from "../components/Button/Button";
-import DecodedUrlsContainer from "../components/DecodedUrlsContainer/DecodedUrlsContainer";
-import { urlsToDecodeKey, decodedUrlsKey } from "../utils/chromeStorageKeys";
+import React, { useState, useEffect, useRef } from 'react';
+import classes from './App.module.css';
+import TextArea from '../components/TextArea/TextArea';
+import StatusMessage from '../components/StatusMessage/StatusMessage';
+import Button from '../components/Button/Button';
+import DecodedUrlsContainer from '../components/DecodedUrlsContainer/DecodedUrlsContainer';
+import { urlsToDecodeKey, decodedUrlsKey } from '../utils/chromeStorageKeys';
 import {
   decodeURLs,
   arrayHaveInvalidUrl,
@@ -14,8 +14,8 @@ import {
   loadFromStorage,
   saveToStorage,
   clearStorage,
-} from "../utils";
-import "normalize.css";
+} from '../utils';
+import 'normalize.css';
 
 const App = () => {
   // this ref is needed for the text selection in the decoded URLs textarea
@@ -24,7 +24,7 @@ const App = () => {
   const [urlsToDecode, setUrlsToDecode] = useState([]);
   const [decodedUrls, setDecodedUrls] = useState([]);
   const [status, setStatus] = useState({
-    message: "",
+    message: '',
     error: false,
   });
 
@@ -63,7 +63,7 @@ const App = () => {
   };
 
   const setMessageStatus = ({
-    message = "",
+    message = '',
     error = false,
     decodedUrls = null,
   }) => {
@@ -72,7 +72,7 @@ const App = () => {
     if (decodedUrls && arrayHaveInvalidUrl(decodedUrls)) {
       status = {
         message:
-          "ERROR: One or more URLs are invalid! Please check that you use the whole URL.",
+          'ERROR: One or more URLs are invalid! Please check that you use the whole URL.',
         error: true,
       };
     }
@@ -81,7 +81,7 @@ const App = () => {
   };
 
   const handleOnChangeURLsToDecode = (event) => {
-    const onChangeUrlsToDecode = event.target.value.split("\n");
+    const onChangeUrlsToDecode = event.target.value.split('\n');
     const onChangeDecodedUrls = decodeURLs(onChangeUrlsToDecode);
 
     setUrlsToDecode(onChangeUrlsToDecode);
@@ -93,25 +93,25 @@ const App = () => {
   const handleClickedCopiedDecodedUrls = async () => {
     if (decodedUrls.length > 0) {
       await navigator.clipboard
-        .writeText(decodedUrls.join("\n"))
+        .writeText(decodedUrls.join('\n'))
         .catch((err) => {
           setMessageStatus({
-            message: "Failed to copy the decoded URLs",
+            message: 'Failed to copy the decoded URLs',
             error: true,
           });
           console.error(
-            `Failed to copy - '${decodedUrls}' to the clipboard!\n${err}`
+            `Failed to copy - '${decodedUrls}' to the clipboard!\n${err}`,
           );
           return;
         });
 
       // copied succeed
-      setMessageStatus({ message: "The decoded URL copied to your clipboard" });
+      setMessageStatus({ message: 'The decoded URL copied to your clipboard' });
       selectText(decodedUrlsElementRef.current);
     } else {
       setMessageStatus({
         message:
-          "Failed to copy to decoded URLs, you have to decode at least one URL",
+          'Failed to copy to decoded URLs, you have to decode at least one URL',
         error: true,
       });
     }
@@ -122,7 +122,7 @@ const App = () => {
     if (chrome && !chrome.tabs) {
       setMessageStatus({
         message:
-          "There is an issue with the extension connection with the browser. Please try again later.",
+          'There is an issue with the extension connection with the browser. Please try again later.',
         error: true,
       });
       return;
@@ -135,18 +135,18 @@ const App = () => {
       // check that the URL is not already exists in state urlsToDecode
       if (!urlsToDecode.includes(currentTab.url)) {
         const currentUrlsToDecode = [...urlsToDecode, currentTab.url].filter(
-          (url) => url.trim().length > 0
+          (url) => url.trim().length > 0,
         );
         const currentDecodedUrls = decodeURLs(currentUrlsToDecode);
 
         setUrlsToDecode(currentUrlsToDecode);
         setDecodedUrls(currentDecodedUrls);
 
-        setMessageStatus({ message: "Decoded current tab URL", decodedUrls });
+        setMessageStatus({ message: 'Decoded current tab URL', decodedUrls });
       } else {
         setMessageStatus({
           message:
-            "The current tab URL is already in text area with the URLs to decode",
+            'The current tab URL is already in text area with the URLs to decode',
           error: true,
         });
       }
