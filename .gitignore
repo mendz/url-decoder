@@ -24,3 +24,4 @@ yarn-error.log*
 .vscode
 *.zip
 screenshots/*-promo*
+.eslintcache
