@@ -4,9 +4,9 @@
   "private": true,
   "dependencies": {
     "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.1"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -26,11 +26,11 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@types/jest": "^25.2.1",
-    "adm-zip": "^0.4.14",
+    "@types/jest": "^26.0.15",
+    "adm-zip": "^0.4.16",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
-    "fs-extra": "^9.0.0",
-    "react-test-renderer": "^16.13.1"
+    "enzyme-adapter-react-16": "^1.15.5",
+    "fs-extra": "^9.0.1",
+    "react-test-renderer": "^17.0.1"
   }
 }
