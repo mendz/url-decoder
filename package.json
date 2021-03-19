@@ -3,20 +3,21 @@
   "version": "1.1.5",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^6.1.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "^4.0.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build-react": "react-scripts build",
+    "start": "craco start",
+    "build-react": "craco build",
     "build-fix": "node scripts/replace-inline-script.js",
     "build": "npm run build-react && npm run build-fix",
     "zip-build": "node scripts/zip-build.js",
     "update-ver": "node scripts/update-version.js",
     "prod": "npm run build && npm run zip-build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "craco test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "browserslist": [
@@ -26,11 +27,15 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@tailwindcss/postcss7-compat": "^2.0.4",
     "@types/jest": "^26.0.20",
     "adm-zip": "^0.5.4",
+    "autoprefixer": "^9.8.6",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "fs-extra": "^9.0.0",
-    "react-test-renderer": "^16.13.1"
+    "postcss": "^7.0.35",
+    "react-test-renderer": "^16.13.1",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.4"
   }
 }
