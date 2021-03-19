@@ -1,9 +1,9 @@
 /* globals chrome */
 
 import React, { useState, useEffect, useRef } from 'react';
-import TextArea from '../components/TextArea/TextArea';
-import StatusMessage from '../components/StatusMessage/StatusMessage';
-import Button from '../components/Button/Button';
+import TextArea from '../components/TextArea';
+import StatusMessage from '../components/StatusMessage';
+import Button from '../components/Button';
 import { urlsToDecodeKey, decodedUrlsKey } from '../utils/chromeStorageKeys';
 import {
   decodeURLs,
