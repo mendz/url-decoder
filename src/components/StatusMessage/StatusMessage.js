@@ -10,14 +10,12 @@ const StatusMessage = ({ message, error }) => {
     classColor = classes.error;
   }
 
-  return (
-    <p className={`${classes.statusMessage} ${classColor}`}>{message}</p>
-  )
-}
+  return <p className={`${classes.statusMessage} ${classColor}`}>{message}</p>;
+};
 
 StatusMessage.propTypes = {
   message: PropsTypes.string,
-  error: PropsTypes.bool
-}
+  error: PropsTypes.bool,
+};
 
 export default StatusMessage;
