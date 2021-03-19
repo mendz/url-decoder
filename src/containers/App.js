@@ -187,7 +187,7 @@ const App = () => {
   ) : null;
 
   return (
-    <div className="flex flex-col flex-1 items-center p-3 h-96">
+    <div className="flex flex-col flex-1 items-center p-3 w-610px h-590px">
       <h1 className="text-2xl mb-2 font-extrabold">URL Decoder</h1>
       <Button clicked={clearStorageUrls}>Clear</Button>
       {textareas}

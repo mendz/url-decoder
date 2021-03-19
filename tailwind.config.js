@@ -6,7 +6,14 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        '590px': '590px',
+      },
+      width: {
+        '610px': '610px',
+      },
+    },
     fontFamily: {
       sans: [...defaultTheme.fontFamily.sans],
       serif: ['Roboto Condensed', ...defaultTheme.fontFamily.serif],
