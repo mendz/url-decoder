@@ -1,7 +1,6 @@
 /* globals chrome */
 
 import React, { useState, useEffect, useRef } from 'react';
-import classes from './App.module.css';
 import TextArea from '../components/TextArea/TextArea';
 import StatusMessage from '../components/StatusMessage/StatusMessage';
 import Button from '../components/Button/Button';
@@ -153,7 +152,7 @@ const App = () => {
   };
 
   const textareas = (
-    <div className={classes.Container}>
+    <div className="flex flex-col justify-center items-center my-5 w-full">
       <TextArea
         textareaPlaceholder="Enter one or more URLs to decode"
         buttonText="Decode"
@@ -172,7 +171,7 @@ const App = () => {
   );
 
   const buttons = (
-    <div className={classes.ButtonsContainer}>
+    <div className="flex justify-center items-center">
       <Button clicked={handleClickedCopiedDecodedUrls}>
         Copy all decoded URLs
       </Button>
@@ -188,8 +187,8 @@ const App = () => {
   ) : null;
 
   return (
-    <div className={classes.App}>
-      <h1>URL Decoder</h1>
+    <div className="flex flex-col flex-1 items-center p-3 h-96">
+      <h1 className="text-2xl mb-2 font-extrabold">URL Decoder</h1>
       <Button clicked={clearStorageUrls}>Clear</Button>
       {textareas}
       {buttons}

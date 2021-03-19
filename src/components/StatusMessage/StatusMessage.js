@@ -1,16 +1,18 @@
 import React from 'react';
 import PropsTypes from 'prop-types';
 
-import classes from './StatusMessage.module.css';
-
 const StatusMessage = ({ message, error }) => {
-  let classColor = classes.succeed;
+  let classColor = 'text-green-600';
 
   if (error) {
-    classColor = classes.error;
+    classColor = 'text-red-500';
   }
 
-  return <p className={`${classes.statusMessage} ${classColor}`}>{message}</p>;
+  return (
+    <p className={`bg-warmGray-100 text-lg p-1 mt-3 max-w-lg ${classColor}`}>
+      {message}
+    </p>
+  );
 };
 
 StatusMessage.propTypes = {
