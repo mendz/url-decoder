@@ -8,7 +8,7 @@ const TextArea = React.forwardRef(
   ) => {
     return (
       <textarea
-        className="resize-none h-36 w-full first:mb-4 bg-cyan-100 readonly:bg-purple-100 p-1 text-base"
+        className="resize-none h-36 w-full first:mb-4 bg-cyan-100 readonly:bg-purple-100 pl-2 pt-2 text-base shadow-md rounded-md"
         ref={decodedUrlsElementRef}
         placeholder={textareaPlaceholder}
         onChange={handleOnChange}

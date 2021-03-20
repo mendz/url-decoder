@@ -1,5 +1,3 @@
-/* globals chrome */
-
 /**
  * Save data to the sync chrome storage
  * @param {string} key The key for the data in the storage, need to be unique.
@@ -22,7 +20,7 @@ const saveToStorage = (key, value) => {
  */
 const loadFromStorage = (key) => {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get([key], data => {
+    chrome.storage.sync.get([key], (data) => {
       const err = chrome.runtime.lastError;
       if (err) reject(err);
 

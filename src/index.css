@@ -91,5 +91,5 @@
   }
 }
 body {
-  @apply bg-blueGray-200 font-serif;
+  @apply bg-blueGray-200 font-serif text-base;
 }

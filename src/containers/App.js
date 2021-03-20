@@ -1,8 +1,7 @@
-/* globals chrome */
-
 import React, { useState, useEffect, useRef } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import TextArea from '../components/TextArea';
-import StatusMessage from '../components/StatusMessage';
 import Button from '../components/Button';
 import { urlsToDecodeKey, decodedUrlsKey } from '../utils/chromeStorageKeys';
 import {
@@ -21,10 +20,6 @@ const App = () => {
 
   const [urlsToDecode, setUrlsToDecode] = useState([]);
   const [decodedUrls, setDecodedUrls] = useState([]);
-  const [status, setStatus] = useState({
-    message: '',
-    error: false,
-  });
 
   // componentDidMount
   useEffect(() => {
@@ -60,12 +55,18 @@ const App = () => {
     setDecodedUrls([]);
   };
 
-  const setMessageStatus = ({
-    message = '',
-    error = false,
-    decodedUrls = null,
-  }) => {
+  const showToast = ({ message = '', error = false, decodedUrls = null }) => {
     let status = { message, error };
+    const toastPreferences = {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      className: 'text-base',
+    };
 
     if (decodedUrls && arrayHaveInvalidUrl(decodedUrls)) {
       status = {
@@ -75,7 +76,15 @@ const App = () => {
       };
     }
 
-    setStatus(status);
+    if (!status.message?.length) {
+      return;
+    }
+
+    if (status.error) {
+      toast.error(status.message, toastPreferences);
+    } else {
+      toast.success(status.message, toastPreferences);
+    }
   };
 
   const handleOnChangeURLsToDecode = (event) => {
@@ -85,7 +94,7 @@ const App = () => {
     setUrlsToDecode(onChangeUrlsToDecode);
     setDecodedUrls(onChangeDecodedUrls);
 
-    setMessageStatus({ onChangeDecodedUrls });
+    showToast({ decodedUrls: onChangeDecodedUrls });
   };
 
   const handleClickedCopiedDecodedUrls = async () => {
@@ -93,7 +102,7 @@ const App = () => {
       await navigator.clipboard
         .writeText(decodedUrls.join('\n'))
         .catch((err) => {
-          setMessageStatus({
+          showToast({
             message: 'Failed to copy the decoded URLs',
             error: true,
           });
@@ -104,10 +113,10 @@ const App = () => {
         });
 
       // copied succeed
-      setMessageStatus({ message: 'The decoded URL copied to your clipboard' });
+      showToast({ message: 'The decoded URL copied to your clipboard' });
       selectText(decodedUrlsElementRef.current);
     } else {
-      setMessageStatus({
+      showToast({
         message:
           'Failed to copy to decoded URLs, you have to decode at least one URL',
         error: true,
@@ -118,7 +127,7 @@ const App = () => {
   const handleCLickedDecodeCurrent = () => {
     // To prevent the app crashing when working on localhost
     if (chrome && !chrome.tabs) {
-      setMessageStatus({
+      showToast({
         message:
           'There is an issue with the extension connection with the browser. Please try again later.',
         error: true,
@@ -140,9 +149,9 @@ const App = () => {
         setUrlsToDecode(currentUrlsToDecode);
         setDecodedUrls(currentDecodedUrls);
 
-        setMessageStatus({ message: 'Decoded current tab URL', decodedUrls });
+        showToast({ message: 'Decoded current tab URL', decodedUrls });
       } else {
-        setMessageStatus({
+        showToast({
           message:
             'The current tab URL is already in text area with the URLs to decode',
           error: true,
@@ -181,18 +190,13 @@ const App = () => {
     </div>
   );
 
-  const { message, error } = status;
-  const statusMessage = message ? (
-    <StatusMessage message={message} error={error} />
-  ) : null;
-
   return (
-    <div className="flex flex-col flex-1 items-center p-3 w-610px h-590px">
+    <div className="flex flex-col flex-1 items-center p-3 pb-5 w-610px">
       <h1 className="text-2xl mb-2 font-extrabold">URL Decoder</h1>
       <Button clicked={clearStorageUrls}>Clear</Button>
       {textareas}
       {buttons}
-      {statusMessage}
+      <ToastContainer />
     </div>
   );
 };
