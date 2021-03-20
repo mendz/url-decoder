@@ -124,42 +124,6 @@ const App = () => {
     }
   };
 
-  const handleCLickedDecodeCurrent = () => {
-    // To prevent the app crashing when working on localhost
-    if (chrome && !chrome.tabs) {
-      showToast({
-        message:
-          'There is an issue with the extension connection with the browser. Please try again later.',
-        error: true,
-      });
-      return;
-    }
-
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      // extract first value - tabs[0]
-      const [currentTab] = tabs;
-
-      // check that the URL is not already exists in state urlsToDecode
-      if (!urlsToDecode.includes(currentTab.url)) {
-        const currentUrlsToDecode = [...urlsToDecode, currentTab.url].filter(
-          (url) => url.trim().length > 0
-        );
-        const currentDecodedUrls = decodeURLs(currentUrlsToDecode);
-
-        setUrlsToDecode(currentUrlsToDecode);
-        setDecodedUrls(currentDecodedUrls);
-
-        showToast({ message: 'Decoded current tab URL', decodedUrls });
-      } else {
-        showToast({
-          message:
-            'The current tab URL is already in text area with the URLs to decode',
-          error: true,
-        });
-      }
-    });
-  };
-
   const textareas = (
     <div className="flex flex-col justify-center items-center my-5 w-full">
       <TextArea
@@ -184,16 +148,13 @@ const App = () => {
       <Button clicked={handleClickedCopiedDecodedUrls}>
         Copy all decoded URLs
       </Button>
-      <Button clicked={handleCLickedDecodeCurrent}>
-        Decode current tab URL
-      </Button>
+      <Button clicked={clearStorageUrls}>Clear</Button>
     </div>
   );
 
   return (
     <div className="flex flex-col flex-1 items-center p-3 pb-5 w-610px">
       <h1 className="text-2xl mb-2 font-extrabold">URL Decoder</h1>
-      <Button clicked={clearStorageUrls}>Clear</Button>
       {textareas}
       {buttons}
       <ToastContainer />
