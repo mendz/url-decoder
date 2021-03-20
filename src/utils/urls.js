@@ -5,13 +5,14 @@
  * @param {string[]} urlsToDecode An string array of URls to decode.
  * @returns {string[]} An string array of decoded URls.
  */
-const decodeURLs = urlsToDecode => {
+const decodeURLs = (urlsToDecode) => {
   const resultDecodedURLs = urlsToDecode
-    .filter(url => url.trim().length > 0)
-    .map(url => {
+    .filter((url) => url.trim().length > 0)
+    .map((url) => {
       let decodedURL = '';
       try {
         decodedURL = decodeURI(url.trim());
+        new URL(decodedURL);
       } catch (error) {
         decodedURL = 'ERROR: Invalid URL!';
       }
@@ -25,6 +26,6 @@ const decodeURLs = urlsToDecode => {
  * Check if one the URLs include the word: 'ERROR' (case sensitive).
  * @param {string[]} urls An string array of decoded URLs.
  */
-const arrayHaveInvalidUrl = urls => urls.some(url => url.includes('ERROR'));
+const arrayHaveInvalidUrl = (urls) => urls.some((url) => url.includes('ERROR'));
 
 export { decodeURLs, arrayHaveInvalidUrl };
