@@ -11,13 +11,10 @@ Double click on a decoded URL will select the whole line.
 Screenshots:
 
 <p align="center">
-  <img width="460" height="300" src="screenshots\screenshot-01.png">
+  <img width="460" height="300" src="screenshots\screenshot-1280x800.png" alt="screenshot">
 </p>
 <p align="center">
-  <img width="460" height="300" src="screenshots\screenshot-02.png">
-</p>
-<p align="center">
-  <img width="460" height="300" src="screenshots\screenshot-03.png">
+  <img width="460" height="300" src="screenshots\screenshot_2-1280x800.png" alt="screenshot">
 </p>
 
 ---

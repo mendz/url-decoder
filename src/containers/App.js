@@ -137,7 +137,7 @@ const App = () => {
       <Button clicked={handleClickedCopiedDecodedUrls}>
         Copy all decoded URLs
       </Button>
-      <Button clicked={clearStorageUrls}>Clear</Button>
+      <Button clicked={clearStorageUrls}>Clear URLs</Button>
     </div>
   );
 

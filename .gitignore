@@ -23,5 +23,4 @@ yarn-error.log*
 
 ###
 *.zip
-screenshots/*-promo*
 .eslintcache
