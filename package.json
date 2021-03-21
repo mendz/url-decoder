@@ -12,9 +12,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build-react": "craco build",
-    "build-fix": "node scripts/replace-inline-script.js",
-    "build": "npm run build-react && npm run build-fix",
+    "build": "craco build",
     "zip-build": "node scripts/zip-build.js",
     "update-ver": "node scripts/update-version.js",
     "prod": "npm run build && npm run zip-build",
