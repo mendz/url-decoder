@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import TextArea from '../components/TextArea';
 import Button from '../components/Button';
 import { urlsToDecodeKey, decodedUrlsKey } from '../utils/chromeStorageKeys';
@@ -11,6 +11,7 @@ import {
   loadFromStorage,
   saveToStorage,
   clearStorage,
+  useToast,
 } from '../utils';
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
 
   const [urlsToDecode, setUrlsToDecode] = useState([]);
   const [decodedUrls, setDecodedUrls] = useState([]);
+  const { showToast } = useToast();
 
   // componentDidMount
   useEffect(() => {
@@ -54,36 +56,24 @@ const App = () => {
     setDecodedUrls([]);
   };
 
-  const showToast = ({ message = '', error = false, decodedUrls = null }) => {
-    let status = { message, error };
-
+  const toast = ({ caption = '', description = '', hasError = false }) => {
     if (decodedUrls && arrayHaveInvalidUrl(decodedUrls)) {
-      status = {
-        message:
-          'ERROR: One or more URLs are invalid! Please check that you use the whole URL.',
-        error: true,
-      };
+      showToast({
+        caption: 'One or more URLs are invalid!',
+        description: 'Please check that you use the whole URL',
+        hasError: true,
+      });
     }
 
-    if (!status.message?.length) {
+    if (!description?.length) {
       return;
     }
 
-    if (status.error) {
-      toast.error(status.message, {
-        className: 'toast bg-red-500 text-white',
-        iconTheme: {
-          primary: 'var(--color-warning)',
-        },
-      });
-    } else {
-      toast.success(status.message, {
-        className: 'toast bg-green-500 text-white',
-        iconTheme: {
-          primary: 'var(--color-success)',
-        },
-      });
-    }
+    showToast({
+      caption: caption,
+      description: description,
+      hasError: hasError,
+    });
   };
 
   const handleOnChangeURLsToDecode = (event) => {
@@ -99,9 +89,9 @@ const App = () => {
       await navigator.clipboard
         .writeText(decodedUrls.join('\n'))
         .catch((err) => {
-          showToast({
-            message: 'Failed to copy the decoded URLs',
-            error: true,
+          toast({
+            description: 'Failed to copy the decoded URLs',
+            hasError: true,
           });
           console.error(
             `Failed to copy - '${decodedUrls}' to the clipboard!\n${err}`
@@ -110,14 +100,15 @@ const App = () => {
         });
 
       // copied succeed
-      showToast({ message: 'The decoded URL copied to your clipboard' });
-      showToast({ decodedUrls });
+      toast({
+        description: 'The decoded URLs copied to your clipboard',
+      });
       selectText(decodedUrlsElementRef.current);
     } else {
-      showToast({
-        message:
-          'Failed to copy to decoded URLs, you have to decode at least one URL',
-        error: true,
+      toast({
+        caption: 'Failed to copy to decoded URLs',
+        description: 'You have to decode at least one URL',
+        hasError: true,
       });
     }
   };
