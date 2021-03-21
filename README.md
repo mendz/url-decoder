@@ -19,4 +19,4 @@ Screenshots:
 
 ---
 
-> The extension icons (all the sizes) are from - Link icon by Icons8: https://icons8.com/icon/80410/link .
+> The extension manifest icons (all the sizes) are from - Link icon by Icons8: https://icons8.com/icon/80410/link .
