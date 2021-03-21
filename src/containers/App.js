@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast, { Toaster } from 'react-hot-toast';
 import TextArea from '../components/TextArea';
 import Button from '../components/Button';
 import { urlsToDecodeKey, decodedUrlsKey } from '../utils/chromeStorageKeys';
@@ -57,16 +56,6 @@ const App = () => {
 
   const showToast = ({ message = '', error = false, decodedUrls = null }) => {
     let status = { message, error };
-    const toastPreferences = {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: false,
-      progress: undefined,
-      className: 'text-base',
-    };
 
     if (decodedUrls && arrayHaveInvalidUrl(decodedUrls)) {
       status = {
@@ -81,9 +70,19 @@ const App = () => {
     }
 
     if (status.error) {
-      toast.error(status.message, toastPreferences);
+      toast.error(status.message, {
+        className: 'toast bg-red-500 text-white',
+        iconTheme: {
+          primary: 'var(--color-warning)',
+        },
+      });
     } else {
-      toast.success(status.message, toastPreferences);
+      toast.success(status.message, {
+        className: 'toast bg-green-500 text-white',
+        iconTheme: {
+          primary: 'var(--color-success)',
+        },
+      });
     }
   };
 
@@ -93,8 +92,6 @@ const App = () => {
 
     setUrlsToDecode(onChangeUrlsToDecode);
     setDecodedUrls(onChangeDecodedUrls);
-
-    showToast({ decodedUrls: onChangeDecodedUrls });
   };
 
   const handleClickedCopiedDecodedUrls = async () => {
@@ -114,6 +111,7 @@ const App = () => {
 
       // copied succeed
       showToast({ message: 'The decoded URL copied to your clipboard' });
+      showToast({ decodedUrls });
       selectText(decodedUrlsElementRef.current);
     } else {
       showToast({
@@ -157,7 +155,7 @@ const App = () => {
       <h1 className="text-2xl mb-2 font-extrabold">URL Decoder</h1>
       {textareas}
       {buttons}
-      <ToastContainer />
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 };
