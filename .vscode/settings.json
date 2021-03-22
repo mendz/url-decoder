@@ -1,0 +1,19 @@
+{
+  "css.validate": false,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html"
+  },
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.colorDecorators": "inherit",
+  "tailwindCSS.validate": true,
+  "editor.formatOnSave": true,
+  // show eslint icon at bottom toolbar
+  "eslint.alwaysShowStatus": true,
+  // tell the ESLint plugin to run on save
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  }
+}

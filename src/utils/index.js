@@ -1,6 +1,11 @@
 import { arrayHaveInvalidUrl, decodeURLs } from './urls';
 import { selectText, selectLineTextArea } from './text';
-import { loadFromStorage, saveToStorage, clearStorage } from './chromeStorageManagement';
+import {
+  loadFromStorage,
+  saveToStorage,
+  clearStorage,
+} from './chromeStorageManagement';
+import { useToast } from './useToast';
 
 export {
   arrayHaveInvalidUrl,
@@ -9,5 +14,6 @@ export {
   selectLineTextArea,
   loadFromStorage,
   saveToStorage,
-  clearStorage
+  clearStorage,
+  useToast,
 };
