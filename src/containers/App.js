@@ -142,7 +142,7 @@ const App = () => {
   );
 
   return (
-    <div className="flex flex-col flex-1 items-center p-3 pb-5 w-610px">
+    <div className="flex flex-col flex-1 items-center p-3 pb-5 w-[610px]">
       <h1 className="text-2xl mb-2 font-extrabold">URL Decoder</h1>
       {textareas}
       {buttons}
