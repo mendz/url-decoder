@@ -5,7 +5,6 @@ import {
   saveToStorage,
   clearStorage,
 } from './chromeStorageManagement';
-import { useToast } from './useToast';
 
 export {
   arrayHaveInvalidUrl,
@@ -15,5 +14,4 @@ export {
   loadFromStorage,
   saveToStorage,
   clearStorage,
-  useToast,
 };

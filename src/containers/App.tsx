@@ -10,9 +10,9 @@ import {
   loadFromStorage,
   saveToStorage,
   clearStorage,
-  useToast,
 } from '../utils';
 import { ChromeStorageKeys } from '../global-types/enums';
+import { useToast } from '../hooks/useToast';
 
 const App = (): JSX.Element => {
   // this ref is needed for the text selection in the decoded URLs textarea
@@ -148,12 +148,11 @@ const App = (): JSX.Element => {
   );
 
   return (
-    <div className="flex flex-col flex-1 items-center p-3 pb-5 w-[610px]">
-      <h1 className="text-2xl mb-2 font-extrabold">URL Decoder</h1>
+    <>
       {textareas}
       {buttons}
       <Toaster position="top-right" reverseOrder={false} />
-    </div>
+    </>
   );
 };
 
