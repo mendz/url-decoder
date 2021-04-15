@@ -34,6 +34,7 @@
     ]
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.3.2",
     "@tailwindcss/postcss7-compat": "^2.1.0",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",

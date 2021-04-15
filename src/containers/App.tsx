@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Toaster } from 'react-hot-toast';
 import TextArea from '../components/TextArea';
 import Button from '../components/Button';
 import {
@@ -74,9 +73,9 @@ const App = (): JSX.Element => {
     }
 
     showToast({
-      caption: caption,
-      description: description,
-      hasError: hasError,
+      caption,
+      description,
+      hasError,
     });
   };
 
@@ -121,37 +120,28 @@ const App = (): JSX.Element => {
     }
   };
 
-  const textareas = (
-    <div className="flex flex-col justify-center items-center my-5 w-full">
-      <TextArea
-        textareaPlaceholder="Enter one or more URLs to decode"
-        handleOnChange={handleOnChangeURLsToDecode}
-        value={urlsToDecode}
-      />
-      <TextArea
-        textareaPlaceholder="Decoded URLs"
-        value={decodedUrls}
-        readonly={true}
-        doubleClick={selectLineTextArea}
-        ref={decodedUrlsElementRef}
-      />
-    </div>
-  );
-
-  const buttons = (
-    <div className="flex justify-center items-center">
-      <Button clicked={handleClickedCopiedDecodedUrls}>
-        Copy all decoded URLs
-      </Button>
-      <Button clicked={clearStorageUrls}>Clear URLs</Button>
-    </div>
-  );
-
   return (
     <>
-      {textareas}
-      {buttons}
-      <Toaster position="top-right" reverseOrder={false} />
+      <div className="flex flex-col justify-center items-center my-5 w-full">
+        <TextArea
+          textareaPlaceholder="Enter one or more URLs to decode"
+          handleOnChange={handleOnChangeURLsToDecode}
+          value={urlsToDecode}
+        />
+        <TextArea
+          textareaPlaceholder="Decoded URLs"
+          value={decodedUrls}
+          readonly={true}
+          doubleClick={selectLineTextArea}
+          ref={decodedUrlsElementRef}
+        />
+      </div>
+      <div className="flex justify-center items-center">
+        <Button clicked={handleClickedCopiedDecodedUrls}>
+          Copy all decoded URLs
+        </Button>
+        <Button clicked={clearStorageUrls}>Clear URLs</Button>
+      </div>
     </>
   );
 };

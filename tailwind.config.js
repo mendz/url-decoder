@@ -22,6 +22,7 @@ module.exports = {
     },
   },
   plugins: [
+    require('@tailwindcss/forms'),
     plugin(function ({ addVariant, e }) {
       addVariant('readonly', ({ modifySelectors, separator }) => {
         modifySelectors(({ className }) => {

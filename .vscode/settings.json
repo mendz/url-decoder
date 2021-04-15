@@ -21,6 +21,7 @@
     "browserslist",
     "compat",
     "craco",
+    "semibold",
     "tailwindcss",
     "textareas"
   ]
