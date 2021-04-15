@@ -1,6 +1,15 @@
 module.exports = {
-  extends: ['react-app', 'prettier'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['react', '@typescript-eslint', 'html', 'prettier'],
+  extends: [
+    'react-app',
+    'react-app/jest',
+    'prettier',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
+  ],
   rules: {
+    '@typescript-eslint/no-explicit-any': 'off',
     'prettier/prettier': [
       0,
       {
@@ -14,5 +23,4 @@ module.exports = {
   globals: {
     chrome: true,
   },
-  plugins: ['html', 'prettier'],
 };

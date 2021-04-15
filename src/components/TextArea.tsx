@@ -1,7 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const TextArea = React.forwardRef(
+type Props = {
+  textareaPlaceholder: string;
+  handleOnChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
+  value: string[];
+  readonly?: boolean;
+  doubleClick?: React.MouseEventHandler<HTMLTextAreaElement>;
+};
+
+const TextArea = React.forwardRef<HTMLTextAreaElement, Props>(
   (
     { textareaPlaceholder, handleOnChange, value, readonly, doubleClick },
     decodedUrlsElementRef
@@ -19,13 +26,5 @@ const TextArea = React.forwardRef(
     );
   }
 );
-
-TextArea.propTypes = {
-  textareaPlaceholder: PropTypes.string,
-  handleOnChange: PropTypes.func,
-  value: PropTypes.arrayOf(PropTypes.string),
-  readonly: PropTypes.bool,
-  doubleClick: PropTypes.func,
-};
 
 export default TextArea;

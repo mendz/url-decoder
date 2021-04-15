@@ -2,7 +2,7 @@
   "name": "URLs Decoder with unique characters",
   "short_name": "URLs Decoder",
   "description": "Simultaneously decodes the current tab URL or decode multiple URLs by pasting them to the text area.",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "manifest_version": 2,
   "browser_action": {
     "default_popup": "index.html",
@@ -22,8 +22,5 @@
     "60": "static/icons/icons8-link-60.png",
     "128": "static/icons/icons8-link-128.png"
   },
-  "permissions": [
-    "tabs",
-    "storage"
-  ]
+  "permissions": ["tabs", "storage"]
 }

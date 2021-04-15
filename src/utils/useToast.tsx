@@ -1,11 +1,31 @@
 import toast, { CheckmarkIcon, ErrorIcon, LoaderIcon } from 'react-hot-toast';
 import { ReactComponent as CloseIcon } from '../assets/close.svg';
 
-// add tailwind properties variables in order to overwrite goober react-hot-toast styles
-// which in the build is under the linked stylesheet in the header
-export function useToast() {
-  function getDetails(hasError) {
-    let icon = <LoaderIcon />;
+interface IToastDetails {
+  icon: JSX.Element;
+  classes: string;
+}
+
+type ToastProps = {
+  caption: string;
+  description: string;
+  hasError: boolean;
+};
+
+interface IUseToast {
+  showToast: (toastProps: ToastProps) => void;
+}
+
+/**
+ * Toast using react-hot-toast
+ *
+ * Add tailwind properties variables in order to overwrite goober react-hot-toast styles
+ * which in the build is under the linked stylesheet in the header
+ * @returns showToast function
+ */
+export function useToast(): IUseToast {
+  function getDetails(hasError: boolean): IToastDetails {
+    let icon: JSX.Element = <LoaderIcon />;
     let classes = '';
     if (hasError) {
       icon = (
@@ -30,7 +50,7 @@ export function useToast() {
     };
   }
 
-  function showToast({ caption, description, hasError }) {
+  function showToast({ caption, description, hasError }: ToastProps): void {
     const { icon, classes } = getDetails(hasError);
     const error = hasError ? 'ERROR: ' : '';
     toast(

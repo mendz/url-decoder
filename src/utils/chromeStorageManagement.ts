@@ -1,9 +1,11 @@
+type StorageObject = { [key: string]: any };
+
 /**
  * Save data to the sync chrome storage
- * @param {string} key The key for the data in the storage, need to be unique.
- * @param {object} value The object data to save.
+ * @param key The key for the data in the storage, need to be unique.
+ * @param value The object data to save.
  */
-const saveToStorage = (key, value) => {
+const saveToStorage = (key: string, value: StorageObject): Promise<boolean> => {
   return new Promise((resolve, reject) => {
     chrome.storage.sync.set({ [key]: value }, () => {
       const err = chrome.runtime.lastError;
@@ -16,11 +18,11 @@ const saveToStorage = (key, value) => {
 
 /**
  * Load data from the sync chrome storage
- * @param {string} key The key of which data need to load.
+ * @param key The key of which data need to load.
  */
-const loadFromStorage = (key) => {
+const loadFromStorage = (key: string): Promise<any> => {
   return new Promise((resolve, reject) => {
-    chrome.storage.sync.get([key], (data) => {
+    chrome.storage.sync.get([key], (data: StorageObject) => {
       const err = chrome.runtime.lastError;
       if (err) reject(err);
 
@@ -32,7 +34,7 @@ const loadFromStorage = (key) => {
 /**
  * Clear data from the sync chrome storage
  */
-const clearStorage = () => {
+const clearStorage = (): Promise<boolean> => {
   return new Promise((resolve, reject) => {
     chrome.storage.sync.clear(() => {
       const err = chrome.runtime.lastError;

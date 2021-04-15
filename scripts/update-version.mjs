@@ -1,10 +1,10 @@
-const fs = require('fs');
-const path = require('path');
-const packageJSON = require('../package.json');
-const manifestJSON = require('../public/manifest.json');
+import fs from 'fs';
+import path from 'path';
+import packageJSON from '../package.json';
+import manifestJSON from '../public/manifest.json';
 
 const packageJSONPath = path.relative('../', '../package.json');
-const manifestJSONPath = path.relative('../','../public/manifest.json');
+const manifestJSONPath = path.relative('../', '../public/manifest.json');
 
 const version = process.argv[2];
 
@@ -15,25 +15,24 @@ console.log(`
 `);
 
 if (version && version.includes('.')) {
-   console.log(`
+  console.log(`
   VERSION ARGUMENT: ${version}
   packageJSON.version: ${packageJSON.version}
   manifestJSON.version: ${manifestJSON.version}
 `);
 
-packageJSON.version = version;
-manifestJSON.version = version;
+  packageJSON.version = version;
+  manifestJSON.version = version;
 
-fs.writeFileSync(packageJSONPath, JSON.stringify(packageJSON, null, 2));
-fs.writeFileSync(manifestJSONPath, JSON.stringify(manifestJSON, null, 2));
+  fs.writeFileSync(packageJSONPath, JSON.stringify(packageJSON, null, 2));
+  fs.writeFileSync(manifestJSONPath, JSON.stringify(manifestJSON, null, 2));
 
-console.log(`
+  console.log(`
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                             DONE!
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-`)
-
+`);
 } else {
-   console.error('ERROR: Need to provide a version like: "1.0.1"');
-   process.exit();
+  console.error('ERROR: Need to provide a version like: "1.0.1"');
+  process.exit();
 }

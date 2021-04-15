@@ -15,5 +15,13 @@
   // tell the ESLint plugin to run on save
   "editor.codeActionsOnSave": {
     "source.fixAll": true
-  }
+  },
+  "cSpell.words": [
+    "Checkmark",
+    "browserslist",
+    "compat",
+    "craco",
+    "tailwindcss",
+    "textareas"
+  ]
 }

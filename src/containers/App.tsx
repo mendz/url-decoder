@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Toaster } from 'react-hot-toast';
 import TextArea from '../components/TextArea';
 import Button from '../components/Button';
-import { urlsToDecodeKey, decodedUrlsKey } from '../utils/chromeStorageKeys';
 import {
   decodeURLs,
   arrayHaveInvalidUrl,
@@ -13,21 +12,26 @@ import {
   clearStorage,
   useToast,
 } from '../utils';
+import { ChromeStorageKeys } from '../global-types/enums';
 
-const App = () => {
+const App = (): JSX.Element => {
   // this ref is needed for the text selection in the decoded URLs textarea
-  const decodedUrlsElementRef = useRef(null);
+  const decodedUrlsElementRef = useRef<HTMLTextAreaElement>(null);
 
-  const [urlsToDecode, setUrlsToDecode] = useState([]);
-  const [decodedUrls, setDecodedUrls] = useState([]);
+  const [urlsToDecode, setUrlsToDecode] = useState<string[]>([]);
+  const [decodedUrls, setDecodedUrls] = useState<string[]>([]);
   const { showToast } = useToast();
 
   // componentDidMount
   useEffect(() => {
     const asyncLoadFromStorage = async () => {
       if (chrome && chrome.storage) {
-        const urlToDecodePromise = loadFromStorage(urlsToDecodeKey);
-        const decodedUrlsPromise = loadFromStorage(decodedUrlsKey);
+        const urlToDecodePromise = loadFromStorage(
+          ChromeStorageKeys.URLS_TO_DECODE
+        );
+        const decodedUrlsPromise = loadFromStorage(
+          ChromeStorageKeys.DECODED_URLS
+        );
         const [urlsToDecode, decodedUrls] = await Promise.all([
           urlToDecodePromise,
           decodedUrlsPromise,
@@ -43,8 +47,8 @@ const App = () => {
   // componentDidUpdate
   useEffect(() => {
     if (chrome && chrome.storage) {
-      saveToStorage(urlsToDecodeKey, urlsToDecode);
-      saveToStorage(decodedUrlsKey, decodedUrls);
+      saveToStorage(ChromeStorageKeys.URLS_TO_DECODE, urlsToDecode);
+      saveToStorage(ChromeStorageKeys.DECODED_URLS, decodedUrls);
     }
   }, [urlsToDecode, decodedUrls]);
 
@@ -76,9 +80,11 @@ const App = () => {
     });
   };
 
-  const handleOnChangeURLsToDecode = (event) => {
-    const onChangeUrlsToDecode = event.target.value.split('\n');
-    const onChangeDecodedUrls = decodeURLs(onChangeUrlsToDecode);
+  const handleOnChangeURLsToDecode: React.ChangeEventHandler<HTMLTextAreaElement> = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const onChangeUrlsToDecode: string[] = event.target.value.split('\n');
+    const onChangeDecodedUrls: string[] = decodeURLs(onChangeUrlsToDecode);
 
     setUrlsToDecode(onChangeUrlsToDecode);
     setDecodedUrls(onChangeDecodedUrls);
@@ -103,7 +109,9 @@ const App = () => {
       toast({
         description: 'The decoded URLs copied to your clipboard',
       });
-      selectText(decodedUrlsElementRef.current);
+      if (decodedUrlsElementRef.current) {
+        selectText(decodedUrlsElementRef.current);
+      }
     } else {
       toast({
         caption: 'Failed to copy to decoded URLs',
@@ -117,13 +125,11 @@ const App = () => {
     <div className="flex flex-col justify-center items-center my-5 w-full">
       <TextArea
         textareaPlaceholder="Enter one or more URLs to decode"
-        buttonText="Decode"
         handleOnChange={handleOnChangeURLsToDecode}
         value={urlsToDecode}
       />
       <TextArea
         textareaPlaceholder="Decoded URLs"
-        handleOnChange={() => {}}
         value={decodedUrls}
         readonly={true}
         doubleClick={selectLineTextArea}
