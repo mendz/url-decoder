@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import TextArea from '../components/TextArea';
 import Button from '../components/Button';
 import {
@@ -12,6 +12,7 @@ import {
 } from '../utils';
 import { ChromeStorageKeys } from '../global-types/enums';
 import { useToast } from '../hooks/useToast';
+import { SettingsContext } from '../contexts/SettingsContext';
 
 const App = (): JSX.Element => {
   // this ref is needed for the text selection in the decoded URLs textarea
@@ -20,6 +21,7 @@ const App = (): JSX.Element => {
   const [urlsToDecode, setUrlsToDecode] = useState<string[]>([]);
   const [decodedUrls, setDecodedUrls] = useState<string[]>([]);
   const { showToast } = useToast();
+  const { copyValue, trimValue } = useContext(SettingsContext);
 
   // componentDidMount
   useEffect(() => {
@@ -79,49 +81,51 @@ const App = (): JSX.Element => {
     });
   };
 
-  const handleOnChangeURLsToDecode: React.ChangeEventHandler<HTMLTextAreaElement> = (
+  function handleOnChangeURLsToDecode(
     event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  ) {
     const onChangeUrlsToDecode: string[] = event.target.value.split('\n');
     const onChangeDecodedUrls: string[] = decodeURLs(onChangeUrlsToDecode);
 
     setUrlsToDecode(onChangeUrlsToDecode);
     setDecodedUrls(onChangeDecodedUrls);
-  };
+  }
 
-  const handleClickedCopiedDecodedUrls = async () => {
-    if (decodedUrls.length > 0) {
-      await navigator.clipboard
-        .writeText(decodedUrls.join('\n'))
-        .catch((err) => {
-          toast({
-            description: 'Failed to copy the decoded URLs',
-            hasError: true,
-          });
-          console.error(
-            `Failed to copy - '${decodedUrls}' to the clipboard!\n${err}`
-          );
-          return;
-        });
-
-      // copied succeed
-      toast({
-        description: 'The decoded URLs copied to your clipboard',
-      });
-      if (decodedUrlsElementRef.current) {
-        selectText(decodedUrlsElementRef.current);
-      }
-    } else {
+  async function handleClickedCopiedDecodedUrls(): Promise<void> {
+    if (!decodedUrls.length) {
       toast({
         caption: 'Failed to copy to decoded URLs',
         description: 'You have to decode at least one URL',
         hasError: true,
       });
+      return;
     }
-  };
+    await navigator.clipboard.writeText(decodedUrls.join('\n')).catch((err) => {
+      toast({
+        description: 'Failed to copy the decoded URLs',
+        hasError: true,
+      });
+      console.error(
+        `Failed to copy - '${decodedUrls}' to the clipboard!\n${err}`
+      );
+      return;
+    });
+
+    // copied succeed
+    toast({
+      description: 'The decoded URLs copied to your clipboard',
+    });
+    if (decodedUrlsElementRef.current) {
+      selectText(decodedUrlsElementRef.current);
+    }
+  }
 
   return (
     <>
+      {/* TODO: only for debugging, should be removed later */}
+      {copyValue}
+      <br />
+      {trimValue}
       <div className="flex flex-col justify-center items-center my-5 w-full">
         <TextArea
           textareaPlaceholder="Enter one or more URLs to decode"

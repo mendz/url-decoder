@@ -58,41 +58,37 @@ const Settings = (): JSX.Element => {
   const {
     setCopyValue: setGlobalCopyValue,
     setTrimValue: setGlobalTrimValue,
+    copyValue: globalCopyValue,
+    trimValue: globalTrimValue,
   } = useContext<ISettings>(SettingsContext);
-  const [trimValue, setTrimValue] = useState<TrimValue>(TrimValue.NO_TRIM);
+  const [trimValue, setTrimValue] = useState<TrimValue>(globalTrimValue);
   const [copyValue, setCopyValue] = useState<CopyCurrentURLValue>(
-    CopyCurrentURLValue.COPY
+    globalCopyValue
   );
 
-  const submit = (event: React.MouseEvent) => {
+  function submit(event: React.MouseEvent) {
     event.preventDefault();
     // save values
     setGlobalCopyValue(copyValue);
     setGlobalTrimValue(trimValue);
     hideModal();
-  };
+  }
 
-  const isTrimChecked: (value: TrimValue) => boolean = (value: TrimValue) => {
+  function isTrimChecked(value: TrimValue): boolean {
     return trimValue === value;
-  };
+  }
 
-  const onTrimChange: ChangeEventHandler<HTMLInputElement> = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
+  function onTrimChange(event: ChangeEvent<HTMLInputElement>) {
     setTrimValue(event.currentTarget.value as TrimValue);
-  };
+  }
 
-  const isCopyChecked: (value: CopyCurrentURLValue) => boolean = (
-    value: CopyCurrentURLValue
-  ) => {
+  function isCopyChecked(value: CopyCurrentURLValue): boolean {
     return copyValue === value;
-  };
+  }
 
-  const onCopyChange: ChangeEventHandler<HTMLInputElement> = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
+  function onCopyChange(event: ChangeEvent<HTMLInputElement>) {
     setCopyValue(event.currentTarget.value as CopyCurrentURLValue);
-  };
+  }
 
   return (
     <div className="bg-warmGray-100 cursor-auto border-0 rounded-lg flex flex-col">
