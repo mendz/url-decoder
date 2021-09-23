@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useRef, useContext } from 'react';
 import TextArea from '../components/TextArea';
 import Button from '../components/Button';
 import {
@@ -6,62 +6,26 @@ import {
   arrayHaveInvalidUrl,
   selectText,
   selectLineTextArea,
-  loadFromStorage,
-  saveToStorage,
-  clearStorage,
 } from '../utils';
-import { ChromeStorageKeys } from '../global-types/enums';
 import { useToast } from '../hooks/useToast';
 import { SettingsContext } from '../contexts/SettingsContext';
+import { useUrls } from '../hooks/useUrls';
 
 const App = (): JSX.Element => {
   // this ref is needed for the text selection in the decoded URLs textarea
   const decodedUrlsElementRef = useRef<HTMLTextAreaElement>(null);
 
-  const [urlsToDecode, setUrlsToDecode] = useState<string[]>([]);
-  const [decodedUrls, setDecodedUrls] = useState<string[]>([]);
+  const {
+    decodedUrls,
+    setDecodedUrls,
+    setUrlsToDecode,
+    urlsToDecode,
+    clearStorageUrls,
+  } = useUrls();
   const { showToast } = useToast();
   const { copyValue, trimValue } = useContext(SettingsContext);
 
-  // componentDidMount
-  useEffect(() => {
-    const asyncLoadFromStorage = async () => {
-      if (chrome?.storage) {
-        const urlToDecodePromise = loadFromStorage(
-          ChromeStorageKeys.URLS_TO_DECODE
-        );
-        const decodedUrlsPromise = loadFromStorage(
-          ChromeStorageKeys.DECODED_URLS
-        );
-        const [urlsToDecode, decodedUrls] = await Promise.all([
-          urlToDecodePromise,
-          decodedUrlsPromise,
-        ]);
-
-        setUrlsToDecode(urlsToDecode || []);
-        setDecodedUrls(decodedUrls || []);
-      }
-    };
-    asyncLoadFromStorage();
-  }, []);
-
-  // componentDidUpdate
-  useEffect(() => {
-    if (chrome?.storage) {
-      saveToStorage(ChromeStorageKeys.URLS_TO_DECODE, urlsToDecode);
-      saveToStorage(ChromeStorageKeys.DECODED_URLS, decodedUrls);
-    }
-  }, [urlsToDecode, decodedUrls]);
-
-  const clearStorageUrls = () => {
-    if (chrome?.storage) {
-      clearStorage();
-    }
-    setUrlsToDecode([]);
-    setDecodedUrls([]);
-  };
-
-  const toast = ({ caption = '', description = '', hasError = false }) => {
+  function toast({ caption = '', description = '', hasError = false }) {
     if (decodedUrls && arrayHaveInvalidUrl(decodedUrls)) {
       showToast({
         caption: 'One or more URLs are invalid!',
@@ -79,7 +43,7 @@ const App = (): JSX.Element => {
       description,
       hasError,
     });
-  };
+  }
 
   function handleOnChangeURLsToDecode(
     event: React.ChangeEvent<HTMLTextAreaElement>
