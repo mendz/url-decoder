@@ -24,7 +24,7 @@ const App = (): JSX.Element => {
   // componentDidMount
   useEffect(() => {
     const asyncLoadFromStorage = async () => {
-      if (chrome && chrome.storage) {
+      if (chrome?.storage) {
         const urlToDecodePromise = loadFromStorage(
           ChromeStorageKeys.URLS_TO_DECODE
         );
@@ -45,14 +45,14 @@ const App = (): JSX.Element => {
 
   // componentDidUpdate
   useEffect(() => {
-    if (chrome && chrome.storage) {
+    if (chrome?.storage) {
       saveToStorage(ChromeStorageKeys.URLS_TO_DECODE, urlsToDecode);
       saveToStorage(ChromeStorageKeys.DECODED_URLS, decodedUrls);
     }
   }, [urlsToDecode, decodedUrls]);
 
   const clearStorageUrls = () => {
-    if (chrome && chrome.storage) {
+    if (chrome?.storage) {
       clearStorage();
     }
     setUrlsToDecode([]);

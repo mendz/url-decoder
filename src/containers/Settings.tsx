@@ -6,6 +6,12 @@ import React, {
 } from 'react';
 import Button from '../components/Button';
 import { ModalContext } from '../contexts/ModalContext';
+import {
+  TrimValue,
+  CopyCurrentURLValue,
+  ISettings,
+  SettingsContext,
+} from '../contexts/SettingsContext';
 import { IModal } from '../hooks/useModal';
 
 type RadioInputProps = {
@@ -22,19 +28,8 @@ type LabelProps = {
   children: JSX.Element;
 };
 
-enum TrimValue {
-  NO_TRIM = 'NO_TRIM',
-  TRIM_DOMAIN = 'TRIM_DOMAIN',
-  TRIM_PATH = 'TRIM_PATH',
-}
-
-enum CopyCurrentURLValue {
-  COPY = 'COPY',
-  NOT_COPY = 'NOT_COPY',
-}
-
 const Label = ({ label, children, forInput }: LabelProps) => (
-  <label className="cursor-pointer mr-2 last:mr-auto" htmlFor={forInput}>
+  <label className="mr-2 last:mr-auto" htmlFor={forInput}>
     {children}
     <span className="ml-2 select-none">{label}</span>
   </label>
@@ -60,6 +55,10 @@ const RadioInput = ({
 
 const Settings = (): JSX.Element => {
   const { hideModal } = useContext<IModal>(ModalContext);
+  const {
+    setCopyValue: setGlobalCopyValue,
+    setTrimValue: setGlobalTrimValue,
+  } = useContext<ISettings>(SettingsContext);
   const [trimValue, setTrimValue] = useState<TrimValue>(TrimValue.NO_TRIM);
   const [copyValue, setCopyValue] = useState<CopyCurrentURLValue>(
     CopyCurrentURLValue.COPY
@@ -68,6 +67,8 @@ const Settings = (): JSX.Element => {
   const submit = (event: React.MouseEvent) => {
     event.preventDefault();
     // save values
+    setGlobalCopyValue(copyValue);
+    setGlobalTrimValue(trimValue);
     hideModal();
   };
 
