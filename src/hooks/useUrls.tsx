@@ -20,7 +20,7 @@ export function useUrls(): IUrls {
 
   // componentDidMount
   useEffect(() => {
-    const asyncLoadFromStorage = async () => {
+    async function asyncLoadFromStorage() {
       if (chrome?.storage) {
         const urlToDecodePromise = loadFromStorage(
           ChromeStorageKeys.URLS_TO_DECODE
@@ -36,7 +36,7 @@ export function useUrls(): IUrls {
         setUrlsToDecode(urlsToDecode || []);
         setDecodedUrls(decodedUrls || []);
       }
-    };
+    }
     asyncLoadFromStorage();
   }, []);
 

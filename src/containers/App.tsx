@@ -11,9 +11,11 @@ import { useToast } from '../hooks/useToast';
 import { SettingsContext } from '../contexts/SettingsContext';
 import { useUrls } from '../hooks/useUrls';
 
-const App = (): JSX.Element => {
+function App(): JSX.Element {
   // this ref is needed for the text selection in the decoded URLs textarea
-  const decodedUrlsElementRef = useRef<HTMLTextAreaElement>(null);
+  const decodedUrlsElementRef: React.RefObject<HTMLTextAreaElement> = useRef<HTMLTextAreaElement>(
+    null
+  );
 
   const {
     decodedUrls,
@@ -112,6 +114,6 @@ const App = (): JSX.Element => {
       </div>
     </>
   );
-};
+}
 
 export default App;

@@ -1,5 +1,7 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import Modal from '../components/Modal';
+import { ChromeStorageKeys } from '../global-types/enums';
+import { loadFromStorage, saveToStorage } from '../utils';
 
 type Props = { children: JSX.Element[] | JSX.Element };
 
@@ -21,21 +23,62 @@ export enum CopyCurrentURLValue {
   NOT_COPY = 'NOT_COPY',
 }
 
-const defaultValue: ISettings = {
+export const settingsDefaultValue: ISettings = {
   trimValue: TrimValue.NO_TRIM,
   copyValue: CopyCurrentURLValue.COPY,
   setTrimValue: (timeValue: TrimValue) => null,
   setCopyValue: (copyValue: CopyCurrentURLValue) => null,
 };
 
-const SettingsContext = createContext<ISettings>(defaultValue);
+const SettingsContext = createContext<ISettings>(settingsDefaultValue);
 const { Provider } = SettingsContext;
 
 const SettingsProvider = ({ children }: Props): JSX.Element => {
-  const [trimValue, setTrimValue] = useState<TrimValue>(defaultValue.trimValue);
-  const [copyValue, setCopyValue] = useState<CopyCurrentURLValue>(
-    defaultValue.copyValue
+  const [trimValue, setTrimValue] = useState<TrimValue>(
+    settingsDefaultValue.trimValue
   );
+  const [copyValue, setCopyValue] = useState<CopyCurrentURLValue>(
+    settingsDefaultValue.copyValue
+  );
+
+  // load at start the values
+  useEffect(() => {
+    async function asyncLoadFromStorage() {
+      if (chrome?.storage) {
+        const copyOptionValuePromise = loadFromStorage(
+          ChromeStorageKeys.COPY_OPTION_VALUE
+        );
+        const trimOptionValuePromise = loadFromStorage(
+          ChromeStorageKeys.TRIM_OPTION_VALUE
+        );
+        const [copyValue, trimValue] = await Promise.all([
+          copyOptionValuePromise,
+          trimOptionValuePromise,
+        ]);
+
+        setCopyValue(copyValue ?? settingsDefaultValue.copyValue);
+        setTrimValue(trimValue ?? settingsDefaultValue.trimValue);
+      }
+    }
+    try {
+      asyncLoadFromStorage();
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  // update the storage values
+  useEffect(() => {
+    if (chrome?.storage) {
+      try {
+        saveToStorage(ChromeStorageKeys.COPY_OPTION_VALUE, copyValue);
+        saveToStorage(ChromeStorageKeys.TRIM_OPTION_VALUE, trimValue);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, [copyValue, trimValue]);
+
   return (
     <Provider
       value={{
