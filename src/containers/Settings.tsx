@@ -1,4 +1,9 @@
-import React, { useContext } from 'react';
+import React, {
+  ChangeEvent,
+  ChangeEventHandler,
+  useContext,
+  useState,
+} from 'react';
 import Button from '../components/Button';
 import { ModalContext } from '../contexts/ModalContext';
 import { IModal } from '../hooks/useModal';
@@ -8,6 +13,7 @@ type RadioInputProps = {
   name: string;
   value: string;
   isChecked?: boolean;
+  onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
 type LabelProps = {
@@ -16,65 +22,131 @@ type LabelProps = {
   children: JSX.Element;
 };
 
+enum TrimValue {
+  NO_TRIM = 'NO_TRIM',
+  TRIM_DOMAIN = 'TRIM_DOMAIN',
+  TRIM_PATH = 'TRIM_PATH',
+}
+
+enum CopyCurrentURLValue {
+  COPY = 'COPY',
+  NOT_COPY = 'NOT_COPY',
+}
+
 const Label = ({ label, children, forInput }: LabelProps) => (
   <label className="cursor-pointer mr-2 last:mr-auto" htmlFor={forInput}>
     {children}
-    <span className="ml-2">{label}</span>
+    <span className="ml-2 select-none">{label}</span>
   </label>
 );
 
-const RadioInput = ({ id, name, value, isChecked }: RadioInputProps) => (
+const RadioInput = ({
+  id,
+  name,
+  value,
+  isChecked,
+  onChange,
+}: RadioInputProps) => (
   <input
     checked={isChecked}
     type="radio"
     id={id}
     name={name}
     value={value}
+    onChange={onChange}
     className="cursor-pointer rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
   />
 );
 
 const Settings = (): JSX.Element => {
   const { hideModal } = useContext<IModal>(ModalContext);
+  const [trimValue, setTrimValue] = useState<TrimValue>(TrimValue.NO_TRIM);
+  const [copyValue, setCopyValue] = useState<CopyCurrentURLValue>(
+    CopyCurrentURLValue.COPY
+  );
 
   const submit = (event: React.MouseEvent) => {
     event.preventDefault();
+    // save values
     hideModal();
   };
 
+  const isTrimChecked: (value: TrimValue) => boolean = (value: TrimValue) => {
+    return trimValue === value;
+  };
+
+  const onTrimChange: ChangeEventHandler<HTMLInputElement> = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    setTrimValue(event.currentTarget.value as TrimValue);
+  };
+
+  const isCopyChecked: (value: CopyCurrentURLValue) => boolean = (
+    value: CopyCurrentURLValue
+  ) => {
+    return copyValue === value;
+  };
+
+  const onCopyChange: ChangeEventHandler<HTMLInputElement> = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    setCopyValue(event.currentTarget.value as CopyCurrentURLValue);
+  };
+
   return (
-    <div className="w-1/2 h-1/2 bg-warmGray-100 cursor-auto border-0 rounded-lg flex flex-col">
+    <div className="bg-warmGray-100 cursor-auto border-0 rounded-lg flex flex-col">
       <div className="flex items-center p-5 border-b border-solid border-blueGray-200 rounded-t">
         <h3 className="text-3xl pt-2 font-semibold">Settings</h3>
       </div>
       <form className="p-6 h-4/5 flex flex-col flex-auto text-blueGray-500 text-lg leading-relaxed">
         <fieldset className="flex-1">
           <legend className="text-blueGray-700">Trim:</legend>
-          <Label label="No Trim" forInput="no-trim">
-            <RadioInput id="no-trim" value="no-trim" name="trim" isChecked />
+          <Label label="No Trim" forInput={TrimValue.NO_TRIM}>
+            <RadioInput
+              id={TrimValue.NO_TRIM}
+              value={TrimValue.NO_TRIM}
+              name="trim"
+              isChecked={isTrimChecked(TrimValue.NO_TRIM)}
+              onChange={onTrimChange}
+            />
           </Label>
-          <Label label="Trim Domain" forInput="trim-domain">
-            <RadioInput id="trim-domain" value="trim-domain" name="trim" />
+          <Label label="Trim Domain" forInput={TrimValue.TRIM_DOMAIN}>
+            <RadioInput
+              id={TrimValue.TRIM_DOMAIN}
+              value={TrimValue.TRIM_DOMAIN}
+              name="trim"
+              isChecked={isTrimChecked(TrimValue.TRIM_DOMAIN)}
+              onChange={onTrimChange}
+            />
           </Label>
-          <Label label="Trim Path" forInput="trim-path">
-            <RadioInput id="trim-path" value="trim-path" name="trim" />
+          <Label label="Trim Path" forInput={TrimValue.TRIM_PATH}>
+            <RadioInput
+              id={TrimValue.TRIM_PATH}
+              value={TrimValue.TRIM_PATH}
+              name="trim"
+              isChecked={isTrimChecked(TrimValue.TRIM_PATH)}
+              onChange={onTrimChange}
+            />
           </Label>
         </fieldset>
         <fieldset className="flex-1">
           <legend className="text-blueGray-700">Copy current URL:</legend>
-          <Label label="Copy" forInput="copy">
+          <Label label="Copy" forInput={CopyCurrentURLValue.COPY}>
             <RadioInput
-              id="copy"
-              value="copy"
-              name="copy-current-url"
-              isChecked
+              id={CopyCurrentURLValue.COPY}
+              value={CopyCurrentURLValue.COPY}
+              name="copy"
+              isChecked={isCopyChecked(CopyCurrentURLValue.COPY)}
+              onChange={onCopyChange}
             />
           </Label>
-          <Label label="Not Copy" forInput="not-copy">
+          <Label label="Not Copy" forInput={CopyCurrentURLValue.NOT_COPY}>
             <RadioInput
-              id="not-copy"
-              value="not-copy"
-              name="copy-current-url"
+              id={CopyCurrentURLValue.NOT_COPY}
+              value={CopyCurrentURLValue.NOT_COPY}
+              name="copy"
+              isChecked={isCopyChecked(CopyCurrentURLValue.NOT_COPY)}
+              onChange={onCopyChange}
             />
           </Label>
         </fieldset>
