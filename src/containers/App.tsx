@@ -3,7 +3,10 @@ import TextArea from '../components/TextArea';
 import Button from '../components/Button';
 import { arrayHaveInvalidUrl, selectText, selectLineTextArea } from '../utils';
 import { useToast } from '../hooks/useToast';
-import { SettingsContext } from '../contexts/SettingsContext';
+import {
+  CopyCurrentURLValue,
+  SettingsContext,
+} from '../contexts/SettingsContext';
 import { useUrls } from '../hooks/useUrls';
 
 function App(): JSX.Element {
@@ -79,6 +82,43 @@ function App(): JSX.Element {
     }
   }
 
+  function handleCLickedDecodeCurrent() {
+    // To prevent the app crashing when working on localhost
+    if (!chrome?.tabs) {
+      toast({
+        description:
+          'There is an issue with the extension connection with the browser. Please try again later.',
+        hasError: true,
+      });
+      return;
+    }
+
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      // extract first value - tabs[0]
+      const [currentTab] = tabs;
+      const currentTabUrl: string = currentTab.url ?? '';
+
+      // check that the URL is not already exists in state urlsToDecode
+      if (!urlsToDecode.includes(currentTabUrl)) {
+        const currentUrlsToDecode = [...urlsToDecode, currentTabUrl].filter(
+          (url: string) => url.trim().length > 0
+        );
+        updateUrls(currentUrlsToDecode, trimValue);
+        toast({
+          description: 'Decoded current tab URL',
+        });
+      } else {
+        toast({
+          description:
+            'The current tab URL is already in text area with the URLs to decode',
+          hasError: true,
+        });
+      }
+    });
+  }
+
+  const isCopyValue: boolean = copyValue === CopyCurrentURLValue.COPY;
+
   return (
     <>
       {/* TODO: only for debugging, should be removed later */}
@@ -99,10 +139,19 @@ function App(): JSX.Element {
           ref={decodedUrlsElementRef}
         />
       </div>
-      <div className="flex justify-center items-center">
+      <div
+        className={`flex ${
+          isCopyValue ? 'justify-between' : 'justify-center w-full gap-3'
+        } items-center`}
+      >
         <Button clicked={handleClickedCopiedDecodedUrls}>
           Copy all decoded URLs
         </Button>
+        {isCopyValue && (
+          <Button clicked={handleCLickedDecodeCurrent}>
+            Decode current tab URL
+          </Button>
+        )}
         <Button clicked={clearStorageUrls}>Clear URLs</Button>
       </div>
     </>

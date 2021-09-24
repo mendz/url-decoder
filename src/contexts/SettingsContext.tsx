@@ -25,7 +25,7 @@ export enum CopyCurrentURLValue {
 
 export const settingsDefaultValue: ISettings = {
   trimValue: TrimValue.NO_TRIM,
-  copyValue: CopyCurrentURLValue.COPY,
+  copyValue: CopyCurrentURLValue.NOT_COPY,
   setTrimValue: (timeValue: TrimValue) => null,
   setCopyValue: (copyValue: CopyCurrentURLValue) => null,
 };

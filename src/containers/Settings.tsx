@@ -97,7 +97,7 @@ const Settings = (): JSX.Element => {
       </div>
       <form className="p-6 h-4/5 flex flex-col flex-auto text-blueGray-500 text-lg leading-relaxed">
         <fieldset className="flex-1">
-          <legend className="text-blueGray-700">Trim:</legend>
+          <legend className="text-blueGray-700">Trim decoded URL:</legend>
           <Label label="No Trim" forInput={TrimValue.NO_TRIM}>
             <RadioInput
               id={TrimValue.NO_TRIM}
@@ -128,15 +128,6 @@ const Settings = (): JSX.Element => {
         </fieldset>
         <fieldset className="flex-1">
           <legend className="text-blueGray-700">Copy current URL:</legend>
-          <Label label="Copy" forInput={CopyCurrentURLValue.COPY}>
-            <RadioInput
-              id={CopyCurrentURLValue.COPY}
-              value={CopyCurrentURLValue.COPY}
-              name="copy"
-              isChecked={isCopyChecked(CopyCurrentURLValue.COPY)}
-              onChange={onCopyChange}
-            />
-          </Label>
           <Label label="Not Copy" forInput={CopyCurrentURLValue.NOT_COPY}>
             <RadioInput
               id={CopyCurrentURLValue.NOT_COPY}
@@ -146,9 +137,18 @@ const Settings = (): JSX.Element => {
               onChange={onCopyChange}
             />
           </Label>
+          <Label label="Copy" forInput={CopyCurrentURLValue.COPY}>
+            <RadioInput
+              id={CopyCurrentURLValue.COPY}
+              value={CopyCurrentURLValue.COPY}
+              name="copy"
+              isChecked={isCopyChecked(CopyCurrentURLValue.COPY)}
+              onChange={onCopyChange}
+            />
+          </Label>
         </fieldset>
         <div className="flex items-center justify-end p-6 pb-0 pr-1 border-solid border-t border-blueGray-200 rounded-b">
-          <Button clicked={hideModal} autoWidth>
+          <Button classes="mr-4" clicked={hideModal} autoWidth>
             Close
           </Button>
           <Button type="submit" clicked={submit} autoWidth>
