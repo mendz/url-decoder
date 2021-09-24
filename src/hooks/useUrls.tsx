@@ -1,13 +1,46 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
+import { TrimValue } from '../contexts/SettingsContext';
 import { ChromeStorageKeys } from '../global-types/enums';
-import { clearStorage, loadFromStorage, saveToStorage } from '../utils';
+import {
+  clearStorage,
+  decodeURLs,
+  loadFromStorage,
+  saveToStorage,
+} from '../utils';
 
 interface IUrls {
   urlsToDecode: string[];
-  setUrlsToDecode: React.Dispatch<React.SetStateAction<string[]>>;
   decodedUrls: string[];
-  setDecodedUrls: React.Dispatch<React.SetStateAction<string[]>>;
+  updateUrls: (newUrls: string[], trimValue: TrimValue) => void;
   clearStorageUrls: () => void;
+}
+
+type State = string[];
+enum Types {
+  NO_TRIM = 'NO_TRIM',
+  TRIM_DOMAIN = 'TRIM_DOMAIN',
+  TRIM_PATH = 'TRIM_PATH',
+}
+
+type Action = {
+  type: Types;
+  urlsToDecode: string[];
+};
+
+function reducer(decodedUrlsState: State, action: Action): State {
+  const decodedUrls: string[] = decodeURLs(action.urlsToDecode);
+  switch (action.type) {
+    case Types.TRIM_DOMAIN:
+      return decodedUrls.map((url: string) => {
+        const { pathname, search } = new URL(url);
+        return pathname + search;
+      });
+    case Types.TRIM_PATH:
+      return decodedUrls.map((url: string) => new URL(url).hostname);
+    case Types.NO_TRIM:
+    default:
+      return decodedUrls;
+  }
 }
 
 /**
@@ -16,7 +49,7 @@ interface IUrls {
  */
 export function useUrls(): IUrls {
   const [urlsToDecode, setUrlsToDecode] = useState<string[]>([]);
-  const [decodedUrls, setDecodedUrls] = useState<string[]>([]);
+  const [decodedUrls, decodedUrlsDispatch] = useReducer(reducer, []);
 
   // componentDidMount
   useEffect(() => {
@@ -33,8 +66,11 @@ export function useUrls(): IUrls {
           decodedUrlsPromise,
         ]);
 
-        setUrlsToDecode(urlsToDecode || []);
-        setDecodedUrls(decodedUrls || []);
+        setUrlsToDecode(urlsToDecode ?? []);
+        decodedUrlsDispatch({
+          urlsToDecode: decodedUrls ?? [],
+          type: Types.NO_TRIM,
+        });
       }
     }
     asyncLoadFromStorage();
@@ -53,14 +89,21 @@ export function useUrls(): IUrls {
       clearStorage();
     }
     setUrlsToDecode([]);
-    setDecodedUrls([]);
+    decodedUrlsDispatch({ urlsToDecode: [], type: Types.NO_TRIM });
+  }
+
+  function updateUrls(newUrls: string[], trimValue: TrimValue) {
+    setUrlsToDecode(newUrls);
+    decodedUrlsDispatch({
+      urlsToDecode: newUrls,
+      type: Types[trimValue],
+    });
   }
 
   return {
     urlsToDecode,
-    setUrlsToDecode,
     decodedUrls,
-    setDecodedUrls,
+    updateUrls,
     clearStorageUrls,
   };
 }

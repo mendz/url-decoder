@@ -1,12 +1,7 @@
-import React, { useRef, useContext } from 'react';
+import React, { useRef, useContext, useEffect } from 'react';
 import TextArea from '../components/TextArea';
 import Button from '../components/Button';
-import {
-  decodeURLs,
-  arrayHaveInvalidUrl,
-  selectText,
-  selectLineTextArea,
-} from '../utils';
+import { arrayHaveInvalidUrl, selectText, selectLineTextArea } from '../utils';
 import { useToast } from '../hooks/useToast';
 import { SettingsContext } from '../contexts/SettingsContext';
 import { useUrls } from '../hooks/useUrls';
@@ -17,15 +12,15 @@ function App(): JSX.Element {
     null
   );
 
-  const {
-    decodedUrls,
-    setDecodedUrls,
-    setUrlsToDecode,
-    urlsToDecode,
-    clearStorageUrls,
-  } = useUrls();
+  const { decodedUrls, updateUrls, urlsToDecode, clearStorageUrls } = useUrls();
   const { showToast } = useToast();
   const { copyValue, trimValue } = useContext(SettingsContext);
+
+  useEffect(() => {
+    updateUrls(urlsToDecode, trimValue);
+    // todo: meed to check this disable
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trimValue]);
 
   function toast({ caption = '', description = '', hasError = false }) {
     if (decodedUrls && arrayHaveInvalidUrl(decodedUrls)) {
@@ -51,10 +46,7 @@ function App(): JSX.Element {
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) {
     const onChangeUrlsToDecode: string[] = event.target.value.split('\n');
-    const onChangeDecodedUrls: string[] = decodeURLs(onChangeUrlsToDecode);
-
-    setUrlsToDecode(onChangeUrlsToDecode);
-    setDecodedUrls(onChangeDecodedUrls);
+    updateUrls(onChangeUrlsToDecode, trimValue);
   }
 
   async function handleClickedCopiedDecodedUrls(): Promise<void> {
@@ -66,23 +58,24 @@ function App(): JSX.Element {
       });
       return;
     }
-    await navigator.clipboard.writeText(decodedUrls.join('\n')).catch((err) => {
+
+    try {
+      await navigator.clipboard.writeText(decodedUrls.join('\n'));
+
+      toast({
+        description: 'The decoded URLs copied to your clipboard',
+      });
+      if (decodedUrlsElementRef.current) {
+        selectText(decodedUrlsElementRef.current);
+      }
+    } catch (error) {
       toast({
         description: 'Failed to copy the decoded URLs',
         hasError: true,
       });
       console.error(
-        `Failed to copy - '${decodedUrls}' to the clipboard!\n${err}`
+        `Failed to copy - '${decodedUrls}' to the clipboard!\n${error}`
       );
-      return;
-    });
-
-    // copied succeed
-    toast({
-      description: 'The decoded URLs copied to your clipboard',
-    });
-    if (decodedUrlsElementRef.current) {
-      selectText(decodedUrlsElementRef.current);
     }
   }
 
