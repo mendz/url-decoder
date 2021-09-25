@@ -5,6 +5,7 @@ import React, {
   useState,
 } from 'react';
 import Button from '../components/Button';
+import { DecodeContext } from '../contexts/DecodeContext';
 import { ModalContext } from '../contexts/ModalContext';
 import {
   TrimValue,
@@ -12,7 +13,6 @@ import {
   ISettings,
   SettingsContext,
 } from '../contexts/SettingsContext';
-import { IModal } from '../hooks/useModal';
 
 type RadioInputProps = {
   id: string;
@@ -28,33 +28,32 @@ type LabelProps = {
   children: JSX.Element;
 };
 
-const Label = ({ label, children, forInput }: LabelProps) => (
-  <label className="mr-2 last:mr-auto" htmlFor={forInput}>
-    {children}
-    <span className="ml-2 select-none">{label}</span>
-  </label>
-);
+function Label({ label, children, forInput }: LabelProps) {
+  return (
+    <label className="mr-2 last:mr-auto" htmlFor={forInput}>
+      {children}
+      <span className="ml-2 select-none">{label}</span>
+    </label>
+  );
+}
 
-const RadioInput = ({
-  id,
-  name,
-  value,
-  isChecked,
-  onChange,
-}: RadioInputProps) => (
-  <input
-    checked={isChecked}
-    type="radio"
-    id={id}
-    name={name}
-    value={value}
-    onChange={onChange}
-    className="cursor-pointer rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-  />
-);
+function RadioInput({ id, name, value, isChecked, onChange }: RadioInputProps) {
+  return (
+    <input
+      checked={isChecked}
+      type="radio"
+      id={id}
+      name={name}
+      value={value}
+      onChange={onChange}
+      className="cursor-pointer rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
+    />
+  );
+}
 
-const Settings = (): JSX.Element => {
-  const { hideModal } = useContext<IModal>(ModalContext);
+function Settings(): JSX.Element {
+  const { hideModal } = useContext(ModalContext);
+  const { isDecode } = useContext(DecodeContext);
   const {
     setCopyValue: setGlobalCopyValue,
     setTrimValue: setGlobalTrimValue,
@@ -126,7 +125,12 @@ const Settings = (): JSX.Element => {
             />
           </Label>
         </fieldset>
-        <fieldset className="flex-1">
+        <fieldset
+          className={'flex-1'}
+          disabled={!isDecode}
+          title={!isDecode ? `Can't use while encoding` : ''}
+        >
+          {isDecode}
           <legend className="text-blueGray-700">Copy current URL:</legend>
           <Label label="Not Copy" forInput={CopyCurrentURLValue.NOT_COPY}>
             <RadioInput
@@ -158,6 +162,6 @@ const Settings = (): JSX.Element => {
       </form>
     </div>
   );
-};
+}
 
 export default Settings;

@@ -1,5 +1,5 @@
 import toast, { CheckmarkIcon, ErrorIcon, LoaderIcon } from 'react-hot-toast';
-import { ReactComponent as CloseIcon } from '../assets/close.svg';
+import { HiXCircle } from 'react-icons/hi';
 
 interface IToastDetails {
   icon: JSX.Element;
@@ -67,7 +67,7 @@ export function useToast(): IUseToast {
             className="absolute -top-5 -right-6 text-warmGray-100 h6 w-6"
             onClick={() => toast.dismiss(t.id)}
           >
-            <CloseIcon />
+            <HiXCircle size="1.5rem" />
           </button>
         </div>
       ),

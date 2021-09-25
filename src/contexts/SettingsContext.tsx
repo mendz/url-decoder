@@ -33,7 +33,7 @@ export const settingsDefaultValue: ISettings = {
 const SettingsContext = createContext<ISettings>(settingsDefaultValue);
 const { Provider } = SettingsContext;
 
-const SettingsProvider = ({ children }: Props): JSX.Element => {
+function SettingsProvider({ children }: Props): JSX.Element {
   const [trimValue, setTrimValue] = useState<TrimValue>(
     settingsDefaultValue.trimValue
   );
@@ -92,6 +92,6 @@ const SettingsProvider = ({ children }: Props): JSX.Element => {
       {children}
     </Provider>
   );
-};
+}
 
 export { SettingsContext, SettingsProvider };

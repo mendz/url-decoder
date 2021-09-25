@@ -8,6 +8,7 @@ import {
   SettingsContext,
 } from '../contexts/SettingsContext';
 import { useUrls } from '../hooks/useUrls';
+import { DecodeContext } from '../contexts/DecodeContext';
 
 function App(): JSX.Element {
   // this ref is needed for the text selection in the decoded URLs textarea
@@ -18,6 +19,7 @@ function App(): JSX.Element {
   const { decodedUrls, updateUrls, urlsToDecode, clearStorageUrls } = useUrls();
   const { showToast } = useToast();
   const { copyValue, trimValue } = useContext(SettingsContext);
+  const { isDecode } = useContext(DecodeContext);
 
   useEffect(() => {
     updateUrls(urlsToDecode, trimValue);
@@ -118,6 +120,10 @@ function App(): JSX.Element {
   }
 
   const isCopyValue: boolean = copyValue === CopyCurrentURLValue.COPY;
+  const copyAllButtonText: string = isDecode
+    ? 'Copy all decoded URLs'
+    : 'Copy all encoded URLs';
+  const showCopyButton: boolean = isCopyValue && isDecode;
 
   return (
     <>
@@ -141,13 +147,13 @@ function App(): JSX.Element {
       </div>
       <div
         className={`flex ${
-          isCopyValue ? 'justify-between' : 'justify-center w-full gap-3'
+          showCopyButton ? 'justify-between' : 'justify-center w-full gap-3'
         } items-center`}
       >
         <Button clicked={handleClickedCopiedDecodedUrls}>
-          Copy all decoded URLs
+          {copyAllButtonText}
         </Button>
-        {isCopyValue && (
+        {showCopyButton && (
           <Button clicked={handleCLickedDecodeCurrent}>
             Decode current tab URL
           </Button>
