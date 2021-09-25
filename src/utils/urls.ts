@@ -10,11 +10,15 @@ function decodeEncodeURLs(urlsToDecode: string[], isDecode = true): string[] {
   const resultDecodedURLs: string[] = urlsToDecode
     .filter((url) => url.trim().length > 0)
     .map((url) => {
+      let updatedUrl = url;
+      if (!/https?:\/\//g.test(updatedUrl)) {
+        updatedUrl = 'https://' + updatedUrl;
+      }
       let decodedEncodedURL = '';
       try {
         decodedEncodedURL = isDecode
-          ? decodeURI(url.trim())
-          : encodeURI(url.trim());
+          ? decodeURI(updatedUrl.trim())
+          : encodeURI(updatedUrl.trim());
         new URL(decodedEncodedURL);
       } catch (error) {
         decodedEncodedURL = 'ERROR: Invalid URL!';
