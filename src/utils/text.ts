@@ -1,8 +1,3 @@
-import {
-  HTMLElementReactMouseEvent,
-  SelectionModify,
-} from '../global-types/types';
-
 /**
  * Select all the text inside the provided element.
  * @param element The element with the text which needed to be selected.
