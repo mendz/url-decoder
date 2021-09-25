@@ -8,6 +8,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hot-toast": "^1.0.2",
+    "react-icons": "^4.2.0",
     "react-scripts": "^4.0.3"
   },
   "scripts": {
@@ -64,6 +65,6 @@
       "eslint --cache --fix",
       "prettier --write"
     ],
-    "*.{css,html,json}": "prettier --write"
+    "*.{css,html,json,svg}": "prettier --write"
   }
 }
