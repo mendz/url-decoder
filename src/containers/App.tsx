@@ -9,26 +9,36 @@ import {
 } from '../contexts/SettingsContext';
 import { useUrls } from '../hooks/useUrls';
 import { DecodeContext } from '../contexts/DecodeContext';
+import { usePrevious } from '../hooks/usePrevious';
 
 function App(): JSX.Element {
   // this ref is needed for the text selection in the decoded URLs textarea
-  const decodedUrlsElementRef: React.RefObject<HTMLTextAreaElement> = useRef<HTMLTextAreaElement>(
+  const copyUrlsElementRef: React.RefObject<HTMLTextAreaElement> = useRef<HTMLTextAreaElement>(
     null
   );
 
-  const { decodedUrls, updateUrls, urlsToDecode, clearStorageUrls } = useUrls();
+  const { importUrls, exportUrls, updateUrls, clearStorageUrls } = useUrls();
   const { showToast } = useToast();
   const { copyValue, trimValue } = useContext(SettingsContext);
   const { isDecode } = useContext(DecodeContext);
+  const prevIsDecode: boolean = usePrevious<boolean>(isDecode) ?? false;
 
   useEffect(() => {
-    updateUrls(urlsToDecode, trimValue);
+    if (isDecode !== prevIsDecode) {
+      updateUrls(exportUrls, trimValue, isDecode);
+    }
+    // todo: meed to check this disable
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDecode]);
+
+  useEffect(() => {
+    updateUrls(importUrls, trimValue, isDecode);
     // todo: meed to check this disable
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trimValue]);
 
   function toast({ caption = '', description = '', hasError = false }) {
-    if (decodedUrls && arrayHaveInvalidUrl(decodedUrls)) {
+    if (exportUrls && arrayHaveInvalidUrl(exportUrls)) {
       showToast({
         caption: 'One or more URLs are invalid!',
         description: 'Please check that you use the whole URL',
@@ -47,15 +57,13 @@ function App(): JSX.Element {
     });
   }
 
-  function handleOnChangeURLsToDecode(
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) {
-    const onChangeUrlsToDecode: string[] = event.target.value.split('\n');
-    updateUrls(onChangeUrlsToDecode, trimValue);
+  function handleOnChangeURLs(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    const urlsToDecodeEncode: string[] = event.target.value.split('\n');
+    updateUrls(urlsToDecodeEncode, trimValue, isDecode);
   }
 
-  async function handleClickedCopiedDecodedUrls(): Promise<void> {
-    if (!decodedUrls.length) {
+  async function handleClickedCopyExportUrls(): Promise<void> {
+    if (!exportUrls.length) {
       toast({
         caption: 'Failed to copy to decoded URLs',
         description: 'You have to decode at least one URL',
@@ -65,13 +73,13 @@ function App(): JSX.Element {
     }
 
     try {
-      await navigator.clipboard.writeText(decodedUrls.join('\n'));
+      await navigator.clipboard.writeText(exportUrls.join('\n'));
 
       toast({
         description: 'The decoded URLs copied to your clipboard',
       });
-      if (decodedUrlsElementRef.current) {
-        selectText(decodedUrlsElementRef.current);
+      if (copyUrlsElementRef.current) {
+        selectText(copyUrlsElementRef.current);
       }
     } catch (error) {
       toast({
@@ -79,7 +87,7 @@ function App(): JSX.Element {
         hasError: true,
       });
       console.error(
-        `Failed to copy - '${decodedUrls}' to the clipboard!\n${error}`
+        `Failed to copy - '${exportUrls}' to the clipboard!\n${error}`
       );
     }
   }
@@ -101,11 +109,11 @@ function App(): JSX.Element {
       const currentTabUrl: string = currentTab.url ?? '';
 
       // check that the URL is not already exists in state urlsToDecode
-      if (!urlsToDecode.includes(currentTabUrl)) {
-        const currentUrlsToDecode = [...urlsToDecode, currentTabUrl].filter(
+      if (!importUrls.includes(currentTabUrl)) {
+        const currentUrlsToDecode = [...importUrls, currentTabUrl].filter(
           (url: string) => url.trim().length > 0
         );
-        updateUrls(currentUrlsToDecode, trimValue);
+        updateUrls(currentUrlsToDecode, trimValue, isDecode);
         toast({
           description: 'Decoded current tab URL',
         });
@@ -124,25 +132,25 @@ function App(): JSX.Element {
     ? 'Copy all decoded URLs'
     : 'Copy all encoded URLs';
   const showCopyButton: boolean = isCopyValue && isDecode;
+  const firstPlaceHolder: string = isDecode
+    ? 'Enter one or more URLs to decode'
+    : 'Enter one or more URLs to encode';
+  const secondPlaceHolder: string = isDecode ? 'Decoded URLs' : 'Encoded URLs';
 
   return (
     <>
-      {/* TODO: only for debugging, should be removed later */}
-      {copyValue}
-      <br />
-      {trimValue}
       <div className="flex flex-col justify-center items-center my-5 w-full">
         <TextArea
-          textareaPlaceholder="Enter one or more URLs to decode"
-          handleOnChange={handleOnChangeURLsToDecode}
-          value={urlsToDecode}
+          textareaPlaceholder={firstPlaceHolder}
+          handleOnChange={handleOnChangeURLs}
+          value={importUrls}
         />
         <TextArea
-          textareaPlaceholder="Decoded URLs"
-          value={decodedUrls}
+          textareaPlaceholder={secondPlaceHolder}
+          value={exportUrls}
           readonly={true}
           doubleClick={selectLineTextArea}
-          ref={decodedUrlsElementRef}
+          ref={copyUrlsElementRef}
         />
       </div>
       <div
@@ -150,7 +158,7 @@ function App(): JSX.Element {
           showCopyButton ? 'justify-between' : 'justify-center w-full gap-3'
         } items-center`}
       >
-        <Button clicked={handleClickedCopiedDecodedUrls}>
+        <Button clicked={handleClickedCopyExportUrls}>
           {copyAllButtonText}
         </Button>
         {showCopyButton && (

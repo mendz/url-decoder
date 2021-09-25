@@ -152,7 +152,7 @@ function Settings(): JSX.Element {
           </Label>
         </fieldset>
         <div className="flex items-center justify-end p-6 pb-0 pr-1 border-solid border-t border-blueGray-200 rounded-b">
-          <Button classes="mr-4" clicked={hideModal} autoWidth>
+          <Button className="mr-4" clicked={hideModal} autoWidth>
             Close
           </Button>
           <Button type="submit" clicked={submit} autoWidth>

@@ -13,20 +13,21 @@ const Header = (): JSX.Element => {
   const headerText: string = isDecode ? 'URL Decoder' : 'URL Encoder';
 
   return (
-    <div className="flex w-full items-center">
-      <div className="mr-auto">
+    <div className="grid grid-cols-3 grid-row-1 place-items-center w-full">
+      <div className="place-self-start">
         <Button
-          classes="mr-4"
+          title="Settings"
+          className="mr-4"
           autoWidth
           clicked={() => showModal(<Settings />)}
         >
           <HiCog size="1.5rem" />
         </Button>
-        <Button autoWidth clicked={toggle}>
+        <Button title="Swap Decode / Encode" autoWidth clicked={toggle}>
           <HiRefresh size="1.5rem" />
         </Button>
       </div>
-      <h1 className="mr-auto text-2xl mb-2 font-extrabold">{headerText}</h1>
+      <h1 className="text-2xl mb-2 font-extrabold">{headerText}</h1>
     </div>
   );
 };

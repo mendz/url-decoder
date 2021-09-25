@@ -1,17 +1,7 @@
-import { arrayHaveInvalidUrl, decodeURLs } from './urls';
-import { selectText, selectLineTextArea } from './text';
-import {
+export { arrayHaveInvalidUrl, decodeEncodeURLs } from './urls';
+export { selectText, selectLineTextArea } from './text';
+export {
   loadFromStorage,
   saveToStorage,
   clearStorage,
 } from './chromeStorageManagement';
-
-export {
-  arrayHaveInvalidUrl,
-  decodeURLs,
-  selectText,
-  selectLineTextArea,
-  loadFromStorage,
-  saveToStorage,
-  clearStorage,
-};

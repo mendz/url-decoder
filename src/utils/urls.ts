@@ -3,24 +3,27 @@
  *
  * If is an invalid URL the the string will be: 'ERROR: Invalid URL!' and not the URL.
  * @param urlsToDecode An string array of URls to decode.
+ * @param isDecode Default is `true`, if false
  * @returns An string array of decoded URls.
  */
-const decodeURLs = (urlsToDecode: string[]): string[] => {
+function decodeEncodeURLs(urlsToDecode: string[], isDecode = true): string[] {
   const resultDecodedURLs: string[] = urlsToDecode
     .filter((url) => url.trim().length > 0)
     .map((url) => {
-      let decodedURL = '';
+      let decodedEncodedURL = '';
       try {
-        decodedURL = decodeURI(url.trim());
-        new URL(decodedURL);
+        decodedEncodedURL = isDecode
+          ? decodeURI(url.trim())
+          : encodeURI(url.trim());
+        new URL(decodedEncodedURL);
       } catch (error) {
-        decodedURL = 'ERROR: Invalid URL!';
+        decodedEncodedURL = 'ERROR: Invalid URL!';
       }
-      return decodedURL;
+      return decodedEncodedURL;
     });
 
   return resultDecodedURLs;
-};
+}
 
 /**
  * Check if one the URLs include the word: 'ERROR' (case sensitive).
@@ -29,4 +32,4 @@ const decodeURLs = (urlsToDecode: string[]): string[] => {
 const arrayHaveInvalidUrl = (urls: string[]): boolean =>
   urls.some((url) => url.includes('ERROR'));
 
-export { decodeURLs, arrayHaveInvalidUrl };
+export { decodeEncodeURLs, arrayHaveInvalidUrl };
