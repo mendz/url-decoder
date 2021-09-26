@@ -85,16 +85,25 @@ export function useUrls(): IUrls {
         });
       }
     }
-    asyncLoadFromStorage();
-  }, [isDecode]);
+    try {
+      asyncLoadFromStorage();
+    } catch (error) {
+      console.error(error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // componentDidUpdate
   useEffect(() => {
     if (chrome?.storage) {
-      saveToStorage(ChromeStorageKeys.URLS_TO_DECODE, importUrls);
-      saveToStorage(ChromeStorageKeys.DECODED_URLS, exportUrls);
+      try {
+        saveToStorage(ChromeStorageKeys.URLS_TO_DECODE, importUrls);
+        saveToStorage(ChromeStorageKeys.DECODED_URLS, exportUrls);
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }, [importUrls, exportUrls]);
+  }, [exportUrls, importUrls]);
 
   function clearStorageUrls() {
     if (chrome?.storage) {
