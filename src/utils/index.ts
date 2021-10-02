@@ -1,4 +1,4 @@
-export { arrayHaveInvalidUrl, decodeEncodeURLs } from './urls';
+export { arrayHaveInvalidUrl, decodeUrls, encodeUrls } from './urls';
 export { selectText, selectLineTextArea } from './text';
 export {
   loadFromStorage,

@@ -1,25 +1,31 @@
-import { useEffect, useReducer, useState } from 'react';
+import { Reducer, useEffect, useReducer, useState } from 'react';
 import { TrimValue } from '../contexts/SettingsContext';
 import { ChromeStorageKeys } from '../global-types/enums';
 import {
   clearStorage,
-  decodeEncodeURLs,
+  decodeUrls,
+  encodeUrls,
   loadFromStorage,
   saveToStorage,
 } from '../utils';
 
 interface IUrls {
   importUrls: string[];
-  exportUrls: string[];
+  urls: ExportUrlsState;
   updateUrls: (
     newUrls: string[],
     trimValue: TrimValue,
     isDecode: boolean
   ) => void;
   clearStorageUrls: () => void;
+  swapUrls: (trimValue: TrimValue, isDecode: boolean) => void;
 }
 
-type State = string[];
+type ExportUrlsState = {
+  displayExportUrls: string[];
+  originalExportUrls: string[];
+};
+
 enum Types {
   NO_TRIM = 'NO_TRIM',
   TRIM_DOMAIN = 'TRIM_DOMAIN',
@@ -32,24 +38,69 @@ type Action = {
   isDecode: boolean;
 };
 
-function reducer(exportUrls: State, action: Action): State {
-  let urls: string[] = [];
-  if (action.isDecode) {
-    urls = decodeEncodeURLs(action.importUrls);
-  } else {
-    urls = decodeEncodeURLs(action.importUrls, false);
+const exportUrlsInitialState: ExportUrlsState = {
+  displayExportUrls: [],
+  originalExportUrls: [],
+};
+
+function handleDecodeEncode(urls: string[], isDecode: boolean): string[] {
+  if (isDecode) {
+    return decodeUrls(urls);
   }
-  switch (action.type) {
-    case Types.TRIM_DOMAIN:
-      return urls.map((url: string) => {
+  return encodeUrls(urls);
+}
+
+function handleTrimDomain(
+  urls: string[],
+  isDecode: boolean
+): Partial<ExportUrlsState> {
+  return {
+    displayExportUrls: handleDecodeEncode(
+      urls.map((url: string) => {
         const { pathname, search } = new URL(url);
         return pathname + search;
-      });
+      }),
+      isDecode
+    ),
+  };
+}
+
+function handleTrimPath(
+  urls: string[],
+  isDecode: boolean
+): Partial<ExportUrlsState> {
+  return {
+    displayExportUrls: handleDecodeEncode(
+      urls.map((url: string) => new URL(url).hostname),
+      isDecode
+    ),
+  };
+}
+
+function reducer(exportUrls: ExportUrlsState, action: Action): ExportUrlsState {
+  const urls: string[] = action.importUrls;
+  const importUrlsUpdated: string[] = handleDecodeEncode(urls, action.isDecode);
+  switch (action.type) {
+    case Types.TRIM_DOMAIN:
+      return {
+        ...exportUrls,
+        originalExportUrls: importUrlsUpdated,
+        ...handleTrimDomain(urls, action.isDecode),
+      };
+
     case Types.TRIM_PATH:
-      return urls.map((url: string) => new URL(url).hostname);
+      return {
+        ...exportUrls,
+        originalExportUrls: importUrlsUpdated,
+        ...handleTrimPath(urls, action.isDecode),
+      };
     case Types.NO_TRIM:
     default:
-      return urls;
+      const state: ExportUrlsState = {
+        originalExportUrls: importUrlsUpdated,
+        displayExportUrls: importUrlsUpdated,
+      };
+      return { ...exportUrls, ...state };
   }
 }
 
@@ -57,10 +108,12 @@ function reducer(exportUrls: State, action: Action): State {
  * Handle all the load urls (decoded and the ones to decode) from the local storage and updating it when the value changed
  * @returns {IUrls} IUrls
  */
-export function useUrls(): IUrls {
+export function useUrls(initialIsDecodeState: boolean): IUrls {
   const [importUrls, setImportUrls] = useState<string[]>([]);
-  const [exportUrls, exportUrlsDispatch] = useReducer(reducer, []);
-  const [isDecode, setIsDecode] = useState<boolean>(true);
+  const [urls, exportUrlsDispatch] = useReducer<
+    Reducer<ExportUrlsState, Action>
+  >(reducer, exportUrlsInitialState);
+  const [isDecode, setIsDecode] = useState<boolean>(initialIsDecodeState);
 
   // componentDidMount
   useEffect(() => {
@@ -98,12 +151,12 @@ export function useUrls(): IUrls {
     if (chrome?.storage) {
       try {
         saveToStorage(ChromeStorageKeys.URLS_TO_DECODE, importUrls);
-        saveToStorage(ChromeStorageKeys.DECODED_URLS, exportUrls);
+        saveToStorage(ChromeStorageKeys.DECODED_URLS, urls.displayExportUrls);
       } catch (error) {
         console.error(error);
       }
     }
-  }, [exportUrls, importUrls]);
+  }, [urls, importUrls]);
 
   function clearStorageUrls() {
     if (chrome?.storage) {
@@ -131,10 +184,15 @@ export function useUrls(): IUrls {
     });
   }
 
+  function swapUrls(trimValue: TrimValue, isDecode: boolean) {
+    updateUrls(urls.originalExportUrls, trimValue, isDecode);
+  }
+
   return {
     importUrls,
-    exportUrls,
+    urls,
     updateUrls,
     clearStorageUrls,
+    swapUrls,
   };
 }

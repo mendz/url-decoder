@@ -17,15 +17,21 @@ function App(): JSX.Element {
     null
   );
 
-  const { importUrls, exportUrls, updateUrls, clearStorageUrls } = useUrls();
+  const { isDecode } = useContext(DecodeContext);
+  const {
+    importUrls,
+    urls: exportUrls,
+    updateUrls,
+    clearStorageUrls,
+    swapUrls,
+  } = useUrls(isDecode);
   const { showToast } = useToast();
   const { copyValue, trimValue } = useContext(SettingsContext);
-  const { isDecode } = useContext(DecodeContext);
   const prevIsDecode: boolean = usePrevious<boolean>(isDecode) ?? false;
 
   useEffect(() => {
     if (isDecode !== prevIsDecode) {
-      updateUrls(exportUrls, trimValue, isDecode);
+      swapUrls(trimValue, isDecode);
     }
     // todo: meed to check this disable
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,7 +44,7 @@ function App(): JSX.Element {
   }, [trimValue]);
 
   function toast({ caption = '', description = '', hasError = false }) {
-    if (exportUrls && arrayHaveInvalidUrl(exportUrls)) {
+    if (arrayHaveInvalidUrl(exportUrls.originalExportUrls)) {
       showToast({
         caption: 'One or more URLs are invalid!',
         description: 'Please check that you use the whole URL',
@@ -63,7 +69,7 @@ function App(): JSX.Element {
   }
 
   async function handleClickedCopyExportUrls(): Promise<void> {
-    if (!exportUrls.length) {
+    if (!exportUrls.originalExportUrls.length) {
       toast({
         caption: 'Failed to copy to decoded URLs',
         description: 'You have to decode at least one URL',
@@ -73,7 +79,9 @@ function App(): JSX.Element {
     }
 
     try {
-      await navigator.clipboard.writeText(exportUrls.join('\n'));
+      await navigator.clipboard.writeText(
+        exportUrls.originalExportUrls.join('\n')
+      );
 
       toast({
         description: 'The decoded URLs copied to your clipboard',
@@ -147,7 +155,7 @@ function App(): JSX.Element {
         />
         <TextArea
           textareaPlaceholder={secondPlaceHolder}
-          value={exportUrls}
+          value={exportUrls.displayExportUrls}
           readonly={true}
           doubleClick={selectLineTextArea}
           ref={copyUrlsElementRef}

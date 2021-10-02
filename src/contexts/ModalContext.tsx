@@ -7,8 +7,8 @@ type Props = { children: JSX.Element[] | JSX.Element };
 const defaultValue: IModal = {
   component: null,
   isModalShow: false,
-  hideModal: () => console.log('hide modal'),
-  showModal: () => console.log('show modal'),
+  hideModal: () => console.info('hide modal'),
+  showModal: () => console.info('show modal'),
 };
 
 const ModalContext = createContext<IModal>(defaultValue);
