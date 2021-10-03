@@ -1,17 +1,27 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalContext } from '../contexts/ModalContext';
+import useKeyPress from '../hooks/useKeyPress';
 import { IModal } from '../hooks/useModal';
 
 const Modal = (): React.ReactPortal | null => {
   const { component, hideModal, isModalShow } = useContext<IModal>(
     ModalContext
   );
-  const hide = (event: React.MouseEvent) => {
+  const escapeIsPressed: boolean = useKeyPress('Escape');
+  useEffect(() => {
+    if (escapeIsPressed) {
+      hideModal();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [escapeIsPressed]);
+
+  function hide(event: React.MouseEvent) {
     if (event.target === event.currentTarget) {
       hideModal();
     }
-  };
+  }
+
   if (isModalShow) {
     return createPortal(
       <div
