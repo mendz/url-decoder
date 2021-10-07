@@ -78,7 +78,16 @@ function handleTrimPath(
 ): Partial<ExportUrlsState> {
   return {
     displayExportUrls: handleDecodeEncode(
-      urls.map((url: string) => new URL(url).hostname),
+      urls.map((url: string) => {
+        try {
+          return new URL(url).hostname;
+        } catch (error) {
+          return url.replace(
+            /^((http[s]?|ftp):\/)?\/?([^:/\s]+)((\/\w+)*\/)([\w\-.]+[^#?\s]+)(.*)?(#[\w-]+)?$/,
+            '$3'
+          );
+        }
+      }),
       isDecode
     ),
   };
