@@ -57,8 +57,15 @@ function handleTrimDomain(
   return {
     displayExportUrls: handleDecodeEncode(
       urls.map((url: string) => {
-        const { pathname, search } = new URL(url);
-        return pathname + search;
+        try {
+          const { pathname, search } = new URL(url);
+          return pathname + search;
+        } catch (error) {
+          return url.replace(
+            /^[a-z]{4,5}:\/{2}[a-z]{1,}:[0-9]{1,4}.(.*)/,
+            '$1'
+          );
+        }
       }),
       isDecode
     ),
