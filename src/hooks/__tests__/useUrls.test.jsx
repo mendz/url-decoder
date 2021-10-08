@@ -106,3 +106,14 @@ test('should encode the with trim option and keep original value', () => {
 
   expect(result.current.urls.originalExportUrls).toStrictEqual(urlsToDecode);
 });
+
+test('should not fail if not valid url', () => {
+  const { result } = renderHook(() => useUrls());
+  const notValidUrl = ['AnimQui'];
+
+  act(() => {
+    result.current.updateUrls(notValidUrl, TrimValue.TRIM_DOMAIN);
+  });
+
+  expect(result.current.urls.displayExportUrls).toStrictEqual(notValidUrl);
+});

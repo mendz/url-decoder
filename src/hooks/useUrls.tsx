@@ -8,6 +8,7 @@ import {
   loadFromStorage,
   saveToStorage,
 } from '../utils';
+import { parsedUrl } from '../utils/urls';
 
 interface IUrls {
   importUrls: string[];
@@ -20,6 +21,11 @@ interface IUrls {
   clearStorageUrls: () => void;
   swapUrls: (trimValue: TrimValue, isDecode: boolean) => void;
 }
+
+export type ParsedUrl = {
+  hostname: string;
+  path: string;
+};
 
 type ExportUrlsState = {
   displayExportUrls: string[];
@@ -57,15 +63,8 @@ function handleTrimDomain(
   return {
     displayExportUrls: handleDecodeEncode(
       urls.map((url: string) => {
-        try {
-          const { pathname, search } = new URL(url);
-          return pathname + search;
-        } catch (error) {
-          return url.replace(
-            /^[a-z]{4,5}:\/{2}[a-z]{1,}:[0-9]{1,4}.(.*)/,
-            '$1'
-          );
-        }
+        const { path } = parsedUrl(url);
+        return path;
       }),
       isDecode
     ),
@@ -79,14 +78,8 @@ function handleTrimPath(
   return {
     displayExportUrls: handleDecodeEncode(
       urls.map((url: string) => {
-        try {
-          return new URL(url).hostname;
-        } catch (error) {
-          return url.replace(
-            /^((http[s]?|ftp):\/)?\/?([^:/\s]+)((\/\w+)*\/)([\w\-.]+[^#?\s]+)(.*)?(#[\w-]+)?$/,
-            '$3'
-          );
-        }
+        const { hostname } = parsedUrl(url);
+        return hostname;
       }),
       isDecode
     ),
