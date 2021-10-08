@@ -7,7 +7,7 @@ import {
   CopyCurrentURLValue,
   SettingsContext,
 } from '../contexts/SettingsContext';
-import { useUrls } from '../hooks/useUrls';
+import useUrls from '../hooks/useUrls';
 import { DecodeContext } from '../contexts/DecodeContext';
 import { usePrevious } from '../hooks/usePrevious';
 

@@ -124,7 +124,7 @@ function reducer(exportUrls: ExportUrlsState, action: Action): ExportUrlsState {
  * Handle all the load urls (decoded and the ones to decode) from the local storage and updating it when the value changed
  * @returns {IUrls} IUrls
  */
-export function useUrls(initialIsDecodeState: boolean): IUrls {
+export default function useUrls(initialIsDecodeState: boolean): IUrls {
   const [importUrls, setImportUrls] = useState<string[]>([]);
   const [urls, exportUrlsDispatch] = useReducer<
     Reducer<ExportUrlsState, Action>
@@ -189,7 +189,7 @@ export function useUrls(initialIsDecodeState: boolean): IUrls {
   function updateUrls(
     newUrls: string[],
     trimValue: TrimValue,
-    isDecode: boolean
+    isDecode = true
   ) {
     setImportUrls(newUrls);
     setIsDecode(isDecode);
