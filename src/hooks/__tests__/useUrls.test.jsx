@@ -117,3 +117,35 @@ test('should not fail if not valid url', () => {
 
   expect(result.current.urls.displayExportUrls).toStrictEqual(notValidUrl);
 });
+
+test('should swap urls with not trim', async () => {
+  const { result } = renderHook(() => useUrls());
+
+  act(() => {
+    result.current.updateUrls(urlsToDecode, TrimValue.NO_TRIM);
+  });
+  act(() => {
+    result.current.swapUrls(TrimValue.NO_TRIM);
+  });
+
+  expect(result.current.importUrls).toStrictEqual(urlsToEncode);
+  expect(result.current.urls.displayExportUrls).toStrictEqual(urlsToDecode);
+});
+
+test('should clear urls', async () => {
+  const { result } = renderHook(() => useUrls());
+
+  act(() => {
+    result.current.updateUrls(urlsToDecode, TrimValue.NO_TRIM);
+  });
+
+  expect(result.current.importUrls).toStrictEqual(urlsToDecode);
+  expect(result.current.urls.displayExportUrls).toStrictEqual(urlsToEncode);
+
+  act(() => {
+    result.current.clearStorageUrls();
+  });
+
+  expect(result.current.importUrls).toStrictEqual([]);
+  expect(result.current.urls.displayExportUrls).toStrictEqual([]);
+});

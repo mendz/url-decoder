@@ -31,7 +31,7 @@ function App(): JSX.Element {
 
   useEffect(() => {
     if (isDecode !== prevIsDecode) {
-      swapUrls(trimValue, isDecode);
+      swapUrls(trimValue);
     }
     // todo: meed to check this disable
     // eslint-disable-next-line react-hooks/exhaustive-deps

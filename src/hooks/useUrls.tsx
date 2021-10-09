@@ -19,7 +19,7 @@ interface IUrls {
     isDecode: boolean
   ) => void;
   clearStorageUrls: () => void;
-  swapUrls: (trimValue: TrimValue, isDecode: boolean) => void;
+  swapUrls: (trimValue: TrimValue) => void;
 }
 
 export type ParsedUrl = {
@@ -117,7 +117,7 @@ function reducer(exportUrls: ExportUrlsState, action: Action): ExportUrlsState {
  * Handle all the load urls (decoded and the ones to decode) from the local storage and updating it when the value changed
  * @returns {IUrls} IUrls
  */
-export default function useUrls(initialIsDecodeState: boolean): IUrls {
+export default function useUrls(initialIsDecodeState = true): IUrls {
   const [importUrls, setImportUrls] = useState<string[]>([]);
   const [urls, exportUrlsDispatch] = useReducer<
     Reducer<ExportUrlsState, Action>
@@ -193,8 +193,8 @@ export default function useUrls(initialIsDecodeState: boolean): IUrls {
     });
   }
 
-  function swapUrls(trimValue: TrimValue, isDecode: boolean) {
-    updateUrls(urls.originalExportUrls, trimValue, isDecode);
+  function swapUrls(trimValue: TrimValue) {
+    updateUrls(urls.originalExportUrls, trimValue, !isDecode);
   }
 
   return {
