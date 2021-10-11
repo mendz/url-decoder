@@ -8,6 +8,7 @@ import {
   loadFromStorage,
   saveToStorage,
 } from '../utils';
+import { parsedUrl } from '../utils/urls';
 
 interface IUrls {
   importUrls: string[];
@@ -18,8 +19,13 @@ interface IUrls {
     isDecode: boolean
   ) => void;
   clearStorageUrls: () => void;
-  swapUrls: (trimValue: TrimValue, isDecode: boolean) => void;
+  swapUrls: (trimValue: TrimValue) => void;
 }
+
+export type ParsedUrl = {
+  hostname: string;
+  path: string;
+};
 
 type ExportUrlsState = {
   displayExportUrls: string[];
@@ -57,15 +63,8 @@ function handleTrimDomain(
   return {
     displayExportUrls: handleDecodeEncode(
       urls.map((url: string) => {
-        try {
-          const { pathname, search } = new URL(url);
-          return pathname + search;
-        } catch (error) {
-          return url.replace(
-            /^[a-z]{4,5}:\/{2}[a-z]{1,}:[0-9]{1,4}.(.*)/,
-            '$1'
-          );
-        }
+        const { path } = parsedUrl(url);
+        return path;
       }),
       isDecode
     ),
@@ -79,14 +78,8 @@ function handleTrimPath(
   return {
     displayExportUrls: handleDecodeEncode(
       urls.map((url: string) => {
-        try {
-          return new URL(url).hostname;
-        } catch (error) {
-          return url.replace(
-            /^((http[s]?|ftp):\/)?\/?([^:/\s]+)((\/\w+)*\/)([\w\-.]+[^#?\s]+)(.*)?(#[\w-]+)?$/,
-            '$3'
-          );
-        }
+        const { hostname } = parsedUrl(url);
+        return hostname;
       }),
       isDecode
     ),
@@ -124,7 +117,7 @@ function reducer(exportUrls: ExportUrlsState, action: Action): ExportUrlsState {
  * Handle all the load urls (decoded and the ones to decode) from the local storage and updating it when the value changed
  * @returns {IUrls} IUrls
  */
-export function useUrls(initialIsDecodeState: boolean): IUrls {
+export default function useUrls(initialIsDecodeState = true): IUrls {
   const [importUrls, setImportUrls] = useState<string[]>([]);
   const [urls, exportUrlsDispatch] = useReducer<
     Reducer<ExportUrlsState, Action>
@@ -189,7 +182,7 @@ export function useUrls(initialIsDecodeState: boolean): IUrls {
   function updateUrls(
     newUrls: string[],
     trimValue: TrimValue,
-    isDecode: boolean
+    isDecode = true
   ) {
     setImportUrls(newUrls);
     setIsDecode(isDecode);
@@ -200,8 +193,8 @@ export function useUrls(initialIsDecodeState: boolean): IUrls {
     });
   }
 
-  function swapUrls(trimValue: TrimValue, isDecode: boolean) {
-    updateUrls(urls.originalExportUrls, trimValue, isDecode);
+  function swapUrls(trimValue: TrimValue) {
+    updateUrls(urls.originalExportUrls, trimValue, !isDecode);
   }
 
   return {

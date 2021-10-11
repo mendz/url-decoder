@@ -7,7 +7,7 @@ import {
   CopyCurrentURLValue,
   SettingsContext,
 } from '../contexts/SettingsContext';
-import { useUrls } from '../hooks/useUrls';
+import useUrls from '../hooks/useUrls';
 import { DecodeContext } from '../contexts/DecodeContext';
 import { usePrevious } from '../hooks/usePrevious';
 
@@ -31,7 +31,7 @@ function App(): JSX.Element {
 
   useEffect(() => {
     if (isDecode !== prevIsDecode) {
-      swapUrls(trimValue, isDecode);
+      swapUrls(trimValue);
     }
     // todo: meed to check this disable
     // eslint-disable-next-line react-hooks/exhaustive-deps

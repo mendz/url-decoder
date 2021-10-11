@@ -1,3 +1,6 @@
+import urlParser from 'url-parse';
+import { ParsedUrl } from '../hooks/useUrls';
+
 function decodeEncodeURLs(urlsToDecode: string[], isDecode = true): string[] {
   const resultDecodedURLs: string[] = urlsToDecode
     .filter((url) => url.trim().length > 0)
@@ -32,3 +35,18 @@ export function decodeUrls(urlsToDecode: string[]): string[] {
  */
 export const arrayHaveInvalidUrl = (urls: string[]): boolean =>
   urls?.some((url) => url.includes('ERROR'));
+
+export function parsedUrl(url: string): ParsedUrl {
+  const { hostname, pathname, query }: urlParser = urlParser(url);
+  if (hostname === 'localhost') {
+    const invalidUrl = pathname.replace(/^\//, '');
+    return {
+      hostname: invalidUrl,
+      path: invalidUrl,
+    };
+  }
+  return {
+    hostname,
+    path: pathname + query,
+  };
+}
