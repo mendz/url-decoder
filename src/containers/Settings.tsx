@@ -9,7 +9,7 @@ import { DecodeContext } from '../contexts/DecodeContext';
 import { ModalContext } from '../contexts/ModalContext';
 import {
   TrimValue,
-  CopyCurrentURLValue,
+  ShowCurrentURLButtonValue,
   ISettings,
   SettingsContext,
 } from '../contexts/SettingsContext';
@@ -55,13 +55,13 @@ function Settings(): JSX.Element {
   const { hideModal } = useContext(ModalContext);
   const { isDecode } = useContext(DecodeContext);
   const {
-    setCopyValue: setGlobalCopyValue,
+    setShowCurrentButtonValue: setGlobalCopyValue,
     setTrimValue: setGlobalTrimValue,
-    copyValue: globalCopyValue,
+    showCurrentUrlButton: globalCopyValue,
     trimValue: globalTrimValue,
   } = useContext<ISettings>(SettingsContext);
   const [trimValue, setTrimValue] = useState<TrimValue>(globalTrimValue);
-  const [copyValue, setCopyValue] = useState<CopyCurrentURLValue>(
+  const [copyValue, setCopyValue] = useState<ShowCurrentURLButtonValue>(
     globalCopyValue
   );
 
@@ -81,12 +81,12 @@ function Settings(): JSX.Element {
     setTrimValue(event.currentTarget.value as TrimValue);
   }
 
-  function isCopyChecked(value: CopyCurrentURLValue): boolean {
+  function isCopyChecked(value: ShowCurrentURLButtonValue): boolean {
     return copyValue === value;
   }
 
   function onCopyChange(event: ChangeEvent<HTMLInputElement>) {
-    setCopyValue(event.currentTarget.value as CopyCurrentURLValue);
+    setCopyValue(event.currentTarget.value as ShowCurrentURLButtonValue);
   }
 
   return (
@@ -130,23 +130,24 @@ function Settings(): JSX.Element {
           disabled={!isDecode}
           title={!isDecode ? `Can't use while encoding` : ''}
         >
-          {isDecode}
-          <legend className="text-blueGray-700">Copy current URL:</legend>
-          <Label label="Not Copy" forInput={CopyCurrentURLValue.NOT_COPY}>
+          <legend className="text-blueGray-700">
+            Copy current URL button:
+          </legend>
+          <Label label="Not Show" forInput={ShowCurrentURLButtonValue.NOT_SHOW}>
             <RadioInput
-              id={CopyCurrentURLValue.NOT_COPY}
-              value={CopyCurrentURLValue.NOT_COPY}
+              id={ShowCurrentURLButtonValue.NOT_SHOW}
+              value={ShowCurrentURLButtonValue.NOT_SHOW}
               name="copy"
-              isChecked={isCopyChecked(CopyCurrentURLValue.NOT_COPY)}
+              isChecked={isCopyChecked(ShowCurrentURLButtonValue.NOT_SHOW)}
               onChange={onCopyChange}
             />
           </Label>
-          <Label label="Copy" forInput={CopyCurrentURLValue.COPY}>
+          <Label label="Show" forInput={ShowCurrentURLButtonValue.SHOW}>
             <RadioInput
-              id={CopyCurrentURLValue.COPY}
-              value={CopyCurrentURLValue.COPY}
+              id={ShowCurrentURLButtonValue.SHOW}
+              value={ShowCurrentURLButtonValue.SHOW}
               name="copy"
-              isChecked={isCopyChecked(CopyCurrentURLValue.COPY)}
+              isChecked={isCopyChecked(ShowCurrentURLButtonValue.SHOW)}
               onChange={onCopyChange}
             />
           </Label>

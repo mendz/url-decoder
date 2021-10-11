@@ -4,7 +4,7 @@ import Button from '../components/Button';
 import { arrayHaveInvalidUrl, selectText, selectLineTextArea } from '../utils';
 import { useToast } from '../hooks/useToast';
 import {
-  CopyCurrentURLValue,
+  ShowCurrentURLButtonValue,
   SettingsContext,
 } from '../contexts/SettingsContext';
 import useUrls from '../hooks/useUrls';
@@ -26,7 +26,7 @@ function App(): JSX.Element {
     swapUrls,
   } = useUrls(isDecode);
   const { showToast } = useToast();
-  const { copyValue, trimValue } = useContext(SettingsContext);
+  const { showCurrentUrlButton, trimValue } = useContext(SettingsContext);
   const prevIsDecode: boolean = usePrevious<boolean>(isDecode) ?? false;
 
   useEffect(() => {
@@ -135,11 +135,11 @@ function App(): JSX.Element {
     });
   }
 
-  const isCopyValue: boolean = copyValue === CopyCurrentURLValue.COPY;
   const copyAllButtonText: string = isDecode
     ? 'Copy all decoded URLs'
     : 'Copy all encoded URLs';
-  const showCopyButton: boolean = isCopyValue && isDecode;
+  const isShowCurrentUrlButton: boolean =
+    showCurrentUrlButton === ShowCurrentURLButtonValue.SHOW && isDecode;
   const firstPlaceHolder: string = isDecode
     ? 'Enter one or more URLs to decode'
     : 'Enter one or more URLs to encode';
@@ -162,19 +162,24 @@ function App(): JSX.Element {
         />
       </div>
       <div
-        className={`flex ${
-          showCopyButton ? 'justify-between' : 'justify-center w-full gap-3'
+        className={`flex w-full ${
+          isShowCurrentUrlButton ? 'justify-between' : 'justify-center gap-3'
         } items-center`}
       >
-        <Button clicked={handleClickedCopyExportUrls}>
+        <Button
+          clicked={handleClickedCopyExportUrls}
+          autoWidth={isShowCurrentUrlButton}
+        >
           {copyAllButtonText}
         </Button>
-        {showCopyButton && (
-          <Button clicked={handleCLickedDecodeCurrent}>
+        {isShowCurrentUrlButton && (
+          <Button clicked={handleCLickedDecodeCurrent} autoWidth>
             Decode current tab URL
           </Button>
         )}
-        <Button clicked={clearStorageUrls}>Clear URLs</Button>
+        <Button clicked={clearStorageUrls} autoWidth={isShowCurrentUrlButton}>
+          Clear URLs
+        </Button>
       </div>
     </>
   );

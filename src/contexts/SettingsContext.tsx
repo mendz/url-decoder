@@ -7,9 +7,11 @@ type Props = { children: JSX.Element[] | JSX.Element };
 
 export interface ISettings {
   trimValue: TrimValue;
-  copyValue: CopyCurrentURLValue;
+  showCurrentUrlButton: ShowCurrentURLButtonValue;
   setTrimValue: (timeValue: TrimValue) => void;
-  setCopyValue: (copyValue: CopyCurrentURLValue) => void;
+  setShowCurrentButtonValue: (
+    showCurrentURLValue: ShowCurrentURLButtonValue
+  ) => void;
 }
 
 export enum TrimValue {
@@ -18,16 +20,16 @@ export enum TrimValue {
   TRIM_PATH = 'TRIM_PATH',
 }
 
-export enum CopyCurrentURLValue {
-  COPY = 'COPY',
-  NOT_COPY = 'NOT_COPY',
+export enum ShowCurrentURLButtonValue {
+  SHOW = 'SHOW',
+  NOT_SHOW = 'NOT_SHOW',
 }
 
 export const settingsDefaultValue: ISettings = {
   trimValue: TrimValue.NO_TRIM,
-  copyValue: CopyCurrentURLValue.NOT_COPY,
+  showCurrentUrlButton: ShowCurrentURLButtonValue.NOT_SHOW,
   setTrimValue: (timeValue: TrimValue) => null,
-  setCopyValue: (copyValue: CopyCurrentURLValue) => null,
+  setShowCurrentButtonValue: (copyValue: ShowCurrentURLButtonValue) => null,
 };
 
 const SettingsContext = createContext<ISettings>(settingsDefaultValue);
@@ -37,26 +39,31 @@ function SettingsProvider({ children }: Props): JSX.Element {
   const [trimValue, setTrimValue] = useState<TrimValue>(
     settingsDefaultValue.trimValue
   );
-  const [copyValue, setCopyValue] = useState<CopyCurrentURLValue>(
-    settingsDefaultValue.copyValue
+  const [
+    showCurrentUrlButton,
+    setShowCurrentButton,
+  ] = useState<ShowCurrentURLButtonValue>(
+    settingsDefaultValue.showCurrentUrlButton
   );
 
   // load at start the values
   useEffect(() => {
     async function asyncLoadFromStorage() {
       if (chrome?.storage) {
-        const copyOptionValuePromise = loadFromStorage(
+        const showCurrentUrlValuePromise = loadFromStorage(
           ChromeStorageKeys.COPY_OPTION_VALUE
         );
         const trimOptionValuePromise = loadFromStorage(
           ChromeStorageKeys.TRIM_OPTION_VALUE
         );
-        const [copyValue, trimValue] = await Promise.all([
-          copyOptionValuePromise,
+        const [showCurrentButton, trimValue] = await Promise.all([
+          showCurrentUrlValuePromise,
           trimOptionValuePromise,
         ]);
 
-        setCopyValue(copyValue ?? settingsDefaultValue.copyValue);
+        setShowCurrentButton(
+          showCurrentButton ?? settingsDefaultValue.showCurrentUrlButton
+        );
         setTrimValue(trimValue ?? settingsDefaultValue.trimValue);
       }
     }
@@ -71,21 +78,24 @@ function SettingsProvider({ children }: Props): JSX.Element {
   useEffect(() => {
     if (chrome?.storage) {
       try {
-        saveToStorage(ChromeStorageKeys.COPY_OPTION_VALUE, copyValue);
+        saveToStorage(
+          ChromeStorageKeys.COPY_OPTION_VALUE,
+          showCurrentUrlButton
+        );
         saveToStorage(ChromeStorageKeys.TRIM_OPTION_VALUE, trimValue);
       } catch (error) {
         console.error(error);
       }
     }
-  }, [copyValue, trimValue]);
+  }, [showCurrentUrlButton, trimValue]);
 
   return (
     <Provider
       value={{
         trimValue,
-        copyValue,
+        showCurrentUrlButton,
         setTrimValue: (value) => setTrimValue(value),
-        setCopyValue: (value) => setCopyValue(value),
+        setShowCurrentButtonValue: (value) => setShowCurrentButton(value),
       }}
     >
       <Modal />
