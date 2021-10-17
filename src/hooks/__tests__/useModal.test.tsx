@@ -29,6 +29,6 @@ test('should remove component when hide modal', () => {
     result.current.hideModal();
   });
 
-  expect(result.current.isModalShow).toBe(false);
+  expect(result.current.isModalShow).toBe(true);
   expect(result.current.component).toBe(null);
 });
