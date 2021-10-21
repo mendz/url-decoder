@@ -15,7 +15,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["chrome", "cypress", "@testing-library/cypress"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "build"]
