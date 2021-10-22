@@ -4,7 +4,7 @@ import { ModalContext } from '../contexts/ModalContext';
 import useKeyPress from '../hooks/useKeyPress';
 import { IModal } from '../hooks/useModal';
 
-const Modal = (): React.ReactPortal | null => {
+function Modal(): React.ReactPortal | null {
   const { component, hideModal, isModalShow } = useContext<IModal>(
     ModalContext
   );
@@ -24,17 +24,17 @@ const Modal = (): React.ReactPortal | null => {
 
   if (isModalShow) {
     return createPortal(
-      <div
+      <dialog
         className="fixed top-0 left-0 h-screen w-full flex items-center justify-center bg-black bg-opacity-50 cursor-pointer"
         onClick={hide}
       >
         {component}
-      </div>,
+      </dialog>,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       document.querySelector('#modal-root')!
     );
   }
   return null;
-};
+}
 
 export default Modal;

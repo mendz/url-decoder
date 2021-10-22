@@ -17,12 +17,13 @@
     "source.fixAll": true
   },
   "cSpell.words": [
-    "Checkmark",
     "browserslist",
+    "Checkmark",
     "compat",
     "craco",
     "semibold",
     "tailwindcss",
+    "testid",
     "textareas"
   ]
 }

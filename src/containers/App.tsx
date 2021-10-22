@@ -169,6 +169,7 @@ function App(): JSX.Element {
         <Button
           clicked={handleClickedCopyExportUrls}
           autoWidth={isShowCurrentUrlButton}
+          testId="button-decode"
         >
           {copyAllButtonText}
         </Button>
