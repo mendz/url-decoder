@@ -34,6 +34,20 @@ describe('Main Page', () => {
         .eq(1)
         .should('have.text', 'https://www.google.com/search?q=בדיקה');
     });
+
+    it('Should encode', () => {
+      cy.findByTestId('button-swap').click();
+      cy.get('textarea')
+        .eq(0)
+        .click()
+        .type('https://www.google.com/search?q=בדיקה');
+      cy.get('textarea')
+        .eq(1)
+        .should(
+          'have.text',
+          'https://www.google.com/search?q=%D7%91%D7%93%D7%99%D7%A7%D7%94'
+        );
+    });
   });
 
   context('Buttons', () => {
