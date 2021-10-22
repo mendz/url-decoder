@@ -20,6 +20,7 @@
     "prod": "npm run build && npm run zip-build",
     "test": "craco test",
     "e2e": "cypress open",
+    "e2e:headless": "cypress run --headless  --spec '**/url-decoder/**/*.spec.js'",
     "eject": "react-scripts eject",
     "lint-staged": "lint-staged",
     "prepare": "husky install"
