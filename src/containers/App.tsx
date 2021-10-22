@@ -169,7 +169,7 @@ function App(): JSX.Element {
         <Button
           clicked={handleClickedCopyExportUrls}
           autoWidth={isShowCurrentUrlButton}
-          testId="button-decode"
+          testId="button-copy-all"
         >
           {copyAllButtonText}
         </Button>
@@ -178,7 +178,11 @@ function App(): JSX.Element {
             Decode current tab URL
           </Button>
         )}
-        <Button clicked={clearStorageUrls} autoWidth={isShowCurrentUrlButton}>
+        <Button
+          clicked={clearStorageUrls}
+          autoWidth={isShowCurrentUrlButton}
+          testId="button-clear"
+        >
           Clear URLs
         </Button>
       </div>

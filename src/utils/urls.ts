@@ -2,13 +2,18 @@ import urlParser from 'url-parse';
 import { ParsedUrl } from '../hooks/useUrls';
 
 function decodeEncodeURLs(urlsToDecode: string[], isDecode = true): string[] {
-  const resultDecodedURLs: string[] = urlsToDecode
-    .filter((url) => url.trim().length > 0)
-    .map((url) => {
-      return isDecode ? decodeURI(url.trim()) : encodeURI(url.trim());
-    });
+  try {
+    const resultDecodedURLs: string[] = urlsToDecode
+      .filter((url) => url.trim().length > 0)
+      .map((url) => {
+        return isDecode ? decodeURI(url.trim()) : encodeURI(url.trim());
+      });
 
-  return resultDecodedURLs;
+    return resultDecodedURLs;
+  } catch (error: any) {
+    console.warn(error.message);
+    return [];
+  }
 }
 
 /**
