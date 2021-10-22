@@ -1,5 +1,9 @@
 describe('Main Page', () => {
   beforeEach(() => {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    // jest.mock('chrome', () => {});
+    // jasmine.createSpyObj('chrome', {});
+    cy.spy(chrome, {});
     cy.visit('http://localhost:3000/');
   });
 

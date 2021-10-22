@@ -3,7 +3,8 @@ name: Unit Tests
 
 # execute on events
 on:
-  pull_request
+  pull_request:
+    types: [edited, opened, synchronize, reopened]
 
 # jobs to run
 jobs:

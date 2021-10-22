@@ -15,10 +15,11 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
     // "types": ["cypress"]
     // "typeRoots": ["./node_modules/@types"]
     // "types": ["@types/chrome", "cypress/types", "@testing-library/cypress"]
+    "types": ["@types/chrome"]
   },
   // "include": ["src"],
   "include": ["**/*.*"],
