@@ -174,7 +174,11 @@ function App(): JSX.Element {
           {copyAllButtonText}
         </Button>
         {isShowCurrentUrlButton && (
-          <Button clicked={handleCLickedDecodeCurrent} autoWidth>
+          <Button
+            clicked={handleCLickedDecodeCurrent}
+            autoWidth
+            testId="button-decode-current"
+          >
             Decode current tab URL
           </Button>
         )}
