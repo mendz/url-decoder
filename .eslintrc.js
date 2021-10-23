@@ -34,12 +34,4 @@ module.exports = {
     'cypress/globals': true,
   },
   ignorePatterns: ['cypress/integration/examples'],
-  // "overrides": [
-  //   {
-  //       "files": ["cypress/integration/examples/**"],
-  //       "rules": {
-  //           "no-unused-expressions": "off"
-  //       }
-  //   }
-  // ]
 };
