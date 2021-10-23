@@ -1,0 +1,42 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "E2E",
+      "detail": "Run Cypress E2E tests",
+      "type": "npm",
+      "script": "e2e",
+      "problemMatcher": []
+    },
+    {
+      "label": "Unit tests",
+      "detail": "Run the unit tests",
+      "type": "npm",
+      "script": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Start",
+      "detail": "Start dev",
+      "type": "npm",
+      "script": "start",
+      "problemMatcher": []
+    },
+    {
+      "label": "Update Version",
+      "detail": "Update the app version in the package files",
+      "type": "shell",
+      "command": "npm run update_ver '${input:udpateVersion}'",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "udpateVersion",
+      "description": "Enter the new version you wish to update to"
+    }
+  ]
+}
