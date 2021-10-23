@@ -11,13 +11,6 @@
       "problemMatcher": []
     },
     {
-      "label": "E2E headless",
-      "detail": "Run Cypress headless E2E tests",
-      "type": "npm",
-      "script": "e2e:headleass",
-      "problemMatcher": []
-    },
-    {
       "label": "Unit tests",
       "detail": "Run the unit tests",
       "type": "npm",
