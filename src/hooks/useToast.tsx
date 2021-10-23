@@ -55,7 +55,11 @@ export function useToast(): IUseToast {
     const error = hasError ? 'ERROR: ' : '';
     toast(
       (t) => (
-        <div className="relative" onClick={() => toast.dismiss(t.id)}>
+        <div
+          className="relative"
+          onClick={() => toast.dismiss(t.id)}
+          data-testid="toast"
+        >
           {caption && (
             <h3 className="text-sm">
               <span className="font-semibold">{error}</span>
@@ -66,6 +70,7 @@ export function useToast(): IUseToast {
           <button
             className="absolute -top-5 -right-6 text-warmGray-100 h6 w-6"
             onClick={() => toast.dismiss(t.id)}
+            data-testid="button-toast-close"
           >
             <HiXCircle size="1.5rem" />
           </button>

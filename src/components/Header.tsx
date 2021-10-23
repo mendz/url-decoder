@@ -13,22 +13,28 @@ const Header = (): JSX.Element => {
   const headerText: string = isDecode ? 'URL Decoder' : 'URL Encoder';
 
   return (
-    <div className="grid grid-cols-3 grid-row-1 place-items-center w-full">
+    <header className="grid grid-cols-3 grid-row-1 place-items-center w-full">
       <div className="place-self-start">
         <Button
           title="Settings"
           className="mr-4"
           autoWidth
           clicked={() => showModal(<Settings />)}
+          testId="button-settings"
         >
           <HiCog size="1.5rem" />
         </Button>
-        <Button title="Swap Decode / Encode" autoWidth clicked={toggle}>
+        <Button
+          title="Swap Decode / Encode"
+          autoWidth
+          clicked={toggle}
+          testId="button-swap"
+        >
           <HiRefresh size="1.5rem" />
         </Button>
       </div>
       <h1 className="text-2xl mb-2 font-extrabold">{headerText}</h1>
-    </div>
+    </header>
   );
 };
 

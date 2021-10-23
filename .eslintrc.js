@@ -1,12 +1,13 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  plugins: ['react', '@typescript-eslint', 'html', 'prettier'],
+  plugins: ['react', '@typescript-eslint', 'html', 'prettier', 'cypress'],
   extends: [
     'react-app',
     'react-app/jest',
     'prettier',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
+    'plugin:cypress/recommended',
   ],
   rules: {
     '@typescript-eslint/no-explicit-any': 'off',
@@ -29,4 +30,8 @@ module.exports = {
   globals: {
     chrome: true,
   },
+  env: {
+    'cypress/globals': true,
+  },
+  ignorePatterns: ['cypress/integration/examples'],
 };

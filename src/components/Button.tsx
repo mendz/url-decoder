@@ -7,6 +7,7 @@ type Props = {
   className?: string;
   children: JSX.Element | string;
   title?: string;
+  testId?: string;
 };
 
 const Button = ({
@@ -16,6 +17,7 @@ const Button = ({
   className = '',
   children,
   title = '',
+  testId,
 }: Props): JSX.Element => {
   const minWidth = autoWidth ? '' : 'min-w-3xs';
   return (
@@ -24,6 +26,7 @@ const Button = ({
       onClick={clicked}
       type={type}
       title={title}
+      data-testid={testId}
     >
       {children}
     </button>

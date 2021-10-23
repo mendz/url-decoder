@@ -8,17 +8,17 @@ type Props = { children: JSX.Element | JSX.Element[] };
 
 function Layout({ children }: Props): JSX.Element {
   return (
-    <ModalProvider>
-      <DecodeProvider>
-        <SettingsProvider>
+    <DecodeProvider>
+      <SettingsProvider>
+        <ModalProvider>
           <div className="flex flex-col flex-1 items-center p-3 pb-5 w-[610px]">
             <Header />
             {children}
             <Toaster position="top-right" reverseOrder={false} />
           </div>
-        </SettingsProvider>
-      </DecodeProvider>
-    </ModalProvider>
+        </ModalProvider>
+      </SettingsProvider>
+    </DecodeProvider>
   );
 }
 

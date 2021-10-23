@@ -17,5 +17,6 @@
     "jsx": "react-jsx",
     "noUnusedLocals": true
   },
-  "include": ["src"]
+  "include": ["**/*.*"],
+  "exclude": ["node_modules", "build"]
 }

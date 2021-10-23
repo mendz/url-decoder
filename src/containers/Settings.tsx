@@ -89,6 +89,8 @@ function Settings(): JSX.Element {
     setCopyValue(event.currentTarget.value as ShowCurrentURLButtonValue);
   }
 
+  const legendText = isDecode ? 'Trim decoded URL' : 'Trim encoded URL';
+
   return (
     <div className="bg-warmGray-100 cursor-auto border-0 rounded-lg flex flex-col">
       <div className="flex items-center p-5 border-b border-solid border-blueGray-200 rounded-t">
@@ -96,7 +98,7 @@ function Settings(): JSX.Element {
       </div>
       <form className="p-6 h-4/5 flex flex-col flex-auto text-blueGray-500 text-lg leading-relaxed">
         <fieldset className="flex-1">
-          <legend className="text-blueGray-700">Trim decoded URL:</legend>
+          <legend className="text-blueGray-700">{legendText}:</legend>
           <Label label="No Trim" forInput={TrimValue.NO_TRIM}>
             <RadioInput
               id={TrimValue.NO_TRIM}
@@ -153,7 +155,12 @@ function Settings(): JSX.Element {
           </Label>
         </fieldset>
         <div className="flex items-center justify-end p-6 pb-0 pr-1 border-solid border-t border-blueGray-200 rounded-b">
-          <Button className="mr-4" clicked={hideModal} autoWidth>
+          <Button
+            className="mr-4"
+            clicked={hideModal}
+            autoWidth
+            testId="button-close"
+          >
             Close
           </Button>
           <Button type="submit" clicked={submit} autoWidth>

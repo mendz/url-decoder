@@ -11,15 +11,15 @@ function useModal(): IModal {
   const [isModalShow, setIsModalShow] = useState(false);
   const [component, setComponent] = useState<JSX.Element | null>(<p>test!</p>);
 
-  const showModal = (modelComponent: JSX.Element): void => {
+  function showModal(modelComponent: JSX.Element): void {
     setIsModalShow(true);
     setComponent(modelComponent);
-  };
+  }
 
-  const hideModal = (): void => {
+  function hideModal(): void {
     setIsModalShow(false);
     setComponent(null);
-  };
+  }
 
   return {
     isModalShow,

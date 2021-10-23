@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from 'react';
-import Modal from '../components/Modal';
 import { ChromeStorageKeys } from '../global-types/enums';
 import { loadFromStorage, saveToStorage } from '../utils';
 
@@ -98,7 +97,6 @@ function SettingsProvider({ children }: Props): JSX.Element {
         setShowCurrentButtonValue: (value) => setShowCurrentButton(value),
       }}
     >
-      <Modal />
       {children}
     </Provider>
   );

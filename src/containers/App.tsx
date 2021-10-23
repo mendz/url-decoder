@@ -169,15 +169,24 @@ function App(): JSX.Element {
         <Button
           clicked={handleClickedCopyExportUrls}
           autoWidth={isShowCurrentUrlButton}
+          testId="button-copy-all"
         >
           {copyAllButtonText}
         </Button>
         {isShowCurrentUrlButton && (
-          <Button clicked={handleCLickedDecodeCurrent} autoWidth>
+          <Button
+            clicked={handleCLickedDecodeCurrent}
+            autoWidth
+            testId="button-decode-current"
+          >
             Decode current tab URL
           </Button>
         )}
-        <Button clicked={clearStorageUrls} autoWidth={isShowCurrentUrlButton}>
+        <Button
+          clicked={clearStorageUrls}
+          autoWidth={isShowCurrentUrlButton}
+          testId="button-clear"
+        >
           Clear URLs
         </Button>
       </div>
