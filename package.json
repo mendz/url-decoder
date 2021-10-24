@@ -17,7 +17,7 @@
     "build": "craco build",
     "zip-build": "node scripts/zip-build.mjs",
     "update_ver": "node --experimental-json-modules scripts/update-version.mjs",
-    "prod": "npm run e2e:headless && npm run build && npm run zip-build",
+    "prod": "npm run build && npm run zip-build",
     "test": "craco test",
     "e2e": "cypress open",
     "e2e:headless": "cypress run --headless  --spec '**/url-decoder/**/*.spec.js'",
