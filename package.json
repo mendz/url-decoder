@@ -16,7 +16,6 @@
     "start": "craco start",
     "build": "craco build",
     "zip-build": "node scripts/zip-build.mjs",
-    "update_ver": "node --experimental-json-modules scripts/update-version.mjs",
     "prod": "npm run build && npm run zip-build",
     "test": "craco test",
     "e2e": "cypress open",

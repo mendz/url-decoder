@@ -25,18 +25,32 @@
       "problemMatcher": []
     },
     {
-      "label": "Update Version",
-      "detail": "Update the app version in the package files",
+      "label": "Update Full Version",
+      "detail": "Update the app version with provided full version",
       "type": "shell",
-      "command": "npm run update_ver '${input:udpateVersion}'",
+      "command": "npm version '${input:udpateFullVersion}'",
+      "problemMatcher": []
+    },
+    {
+      "label": "Bump Version",
+      "detail": "Bump the app version",
+      "type": "shell",
+      "command": "npm version --no-git-tag-version ${input:bumpVersion}",
       "problemMatcher": []
     }
   ],
   "inputs": [
     {
       "type": "promptString",
-      "id": "udpateVersion",
-      "description": "Enter the new version you wish to update to"
+      "id": "udpateFullVersion",
+      "description": "Enter the new full version you wish to update to"
+    },
+    {
+      "type": "pickString",
+      "id": "bumpVersion",
+      "description": "Choose how to bump the vesrion",
+      "options": ["patch", "minor", "major"],
+      "default": "major"
     }
   ]
 }
