@@ -9,7 +9,7 @@ on:
 jobs:
   
   # install dependencies and run test command
-  test:
+  unit_test:
     name: Unit Tests
     runs-on: ubuntu-latest
     timeout-minutes: 20
