@@ -1,7 +1,7 @@
 {
-  "name": "URLs Decoder with unique characters",
-  "short_name": "URLs Decoder",
-  "description": "Simultaneously decodes the current tab URL or decode multiple URLs by pasting them to the text area.",
+  "name": "URLs Decoder/Encoder with unique characters",
+  "short_name": "URLs Decoder/Encoder",
+  "description": "Simultaneously decodes the current tab URL or decode/encode multiple URLs by pasting them to the text area.",
   "version": "1.2.0",
   "manifest_version": 2,
   "browser_action": {
