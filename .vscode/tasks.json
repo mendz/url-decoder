@@ -1,0 +1,56 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "E2E",
+      "detail": "Run Cypress E2E tests",
+      "type": "npm",
+      "script": "e2e",
+      "problemMatcher": []
+    },
+    {
+      "label": "Unit tests",
+      "detail": "Run the unit tests",
+      "type": "npm",
+      "script": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Start",
+      "detail": "Start dev",
+      "type": "npm",
+      "script": "start",
+      "problemMatcher": []
+    },
+    {
+      "label": "Update Full Version",
+      "detail": "Update the app version with provided full version",
+      "type": "shell",
+      "command": "npm version '${input:udpateFullVersion}'",
+      "problemMatcher": []
+    },
+    {
+      "label": "Bump Version",
+      "detail": "Bump the app version",
+      "type": "shell",
+      "command": "npm version --no-git-tag-version ${input:bumpVersion}",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "udpateFullVersion",
+      "description": "Enter the new full version you wish to update to"
+    },
+    {
+      "type": "pickString",
+      "id": "bumpVersion",
+      "description": "Choose how to bump the vesrion",
+      "options": ["patch", "minor", "major"],
+      "default": "major"
+    }
+  ]
+}

@@ -4,13 +4,9 @@ const plugin = require('tailwindcss/plugin');
 
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+  mode: 'jit',
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {
-      width: {
-        '610px': '610px',
-      },
-    },
     fontFamily: {
       sans: [...defaultTheme.fontFamily.sans],
       serif: ['Roboto Condensed', ...defaultTheme.fontFamily.serif],
@@ -22,11 +18,11 @@ module.exports = {
   },
   variants: {
     extend: {
-      margin: ['first'],
       backgroundColor: ['readonly'],
     },
   },
   plugins: [
+    require('@tailwindcss/forms'),
     plugin(function ({ addVariant, e }) {
       addVariant('readonly', ({ modifySelectors, separator }) => {
         modifySelectors(({ className }) => {

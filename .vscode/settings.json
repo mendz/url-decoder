@@ -7,7 +7,7 @@
     "plaintext": "html"
   },
   "tailwindCSS.emmetCompletions": true,
-  "tailwindCSS.colorDecorators": "inherit",
+  "tailwindCSS.colorDecorators": true,
   "tailwindCSS.validate": true,
   "editor.formatOnSave": true,
   // show eslint icon at bottom toolbar
@@ -15,5 +15,15 @@
   // tell the ESLint plugin to run on save
   "editor.codeActionsOnSave": {
     "source.fixAll": true
-  }
+  },
+  "cSpell.words": [
+    "browserslist",
+    "Checkmark",
+    "compat",
+    "craco",
+    "semibold",
+    "tailwindcss",
+    "testid",
+    "textareas"
+  ]
 }
