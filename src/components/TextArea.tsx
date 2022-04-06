@@ -15,7 +15,7 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, Props>(
   ) => {
     return (
       <textarea
-        className="resize-none h-36 w-full first:mb-4 bg-cyan-100 readonly:bg-purple-100 pl-2 pt-2 text-base shadow-md rounded-md"
+        className="resize-none h-36 w-full first:mb-4 bg-cyan-100 readonly:bg-violet-100 pl-2 pt-2 text-base shadow-md rounded-md"
         ref={decodedUrlsElementRef}
         placeholder={textareaPlaceholder}
         onChange={handleOnChange}

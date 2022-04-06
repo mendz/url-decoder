@@ -46,7 +46,7 @@ function RadioInput({ id, name, value, isChecked, onChange }: RadioInputProps) {
       name={name}
       value={value}
       onChange={onChange}
-      className="cursor-pointer rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
+      className="cursor-pointer rounded border-zinc-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
     />
   );
 }
@@ -61,9 +61,8 @@ function Settings(): JSX.Element {
     trimValue: globalTrimValue,
   } = useContext<ISettings>(SettingsContext);
   const [trimValue, setTrimValue] = useState<TrimValue>(globalTrimValue);
-  const [copyValue, setCopyValue] = useState<ShowCurrentURLButtonValue>(
-    globalCopyValue
-  );
+  const [copyValue, setCopyValue] =
+    useState<ShowCurrentURLButtonValue>(globalCopyValue);
 
   function submit(event: React.MouseEvent) {
     event.preventDefault();
@@ -92,13 +91,13 @@ function Settings(): JSX.Element {
   const legendText = isDecode ? 'Trim decoded URL' : 'Trim encoded URL';
 
   return (
-    <div className="bg-warmGray-100 cursor-auto border-0 rounded-lg flex flex-col">
-      <div className="flex items-center p-5 border-b border-solid border-blueGray-200 rounded-t">
+    <div className="bg-stone-100 cursor-auto border-0 rounded-lg flex flex-col">
+      <div className="flex items-center p-5 border-b border-solid border-slate-200 rounded-t">
         <h3 className="text-3xl pt-2 font-semibold">Settings</h3>
       </div>
-      <form className="p-6 h-4/5 flex flex-col flex-auto text-blueGray-500 text-lg leading-relaxed">
+      <form className="p-6 h-4/5 flex flex-col flex-auto text-slate-500 text-lg leading-relaxed">
         <fieldset className="flex-1">
-          <legend className="text-blueGray-700">{legendText}:</legend>
+          <legend className="text-slate-700">{legendText}:</legend>
           <Label label="No Trim" forInput={TrimValue.NO_TRIM}>
             <RadioInput
               id={TrimValue.NO_TRIM}
@@ -132,9 +131,7 @@ function Settings(): JSX.Element {
           disabled={!isDecode}
           title={!isDecode ? `Can't use while encoding` : ''}
         >
-          <legend className="text-blueGray-700">
-            Copy current URL button:
-          </legend>
+          <legend className="text-slate-700">Copy current URL button:</legend>
           <Label label="Not Show" forInput={ShowCurrentURLButtonValue.NOT_SHOW}>
             <RadioInput
               id={ShowCurrentURLButtonValue.NOT_SHOW}
@@ -154,7 +151,7 @@ function Settings(): JSX.Element {
             />
           </Label>
         </fieldset>
-        <div className="flex items-center justify-end p-6 pb-0 pr-1 border-solid border-t border-blueGray-200 rounded-b">
+        <div className="flex items-center justify-end p-6 pb-0 pr-1 border-solid border-t border-slate-200 rounded-b">
           <Button
             className="mr-4"
             clicked={hideModal}

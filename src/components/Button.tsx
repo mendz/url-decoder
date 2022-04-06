@@ -22,7 +22,7 @@ const Button = ({
   const minWidth = autoWidth ? '' : 'min-w-3xs';
   return (
     <button
-      className={`w-auto ${minWidth} bg-gray-100 hover:bg-gray-50 text-gray-900 border border-gray-400 p-2 rounded text-lg font-medium ${className}`}
+      className={`w-auto ${minWidth} bg-zinc-100 hover:bg-zinc-50 text-zinc-900 border border-zinc-400 p-2 rounded text-lg font-medium ${className}`}
       onClick={clicked}
       type={type}
       title={title}

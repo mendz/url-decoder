@@ -3,7 +3,6 @@
   "version": "1.2.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^6.1.1",
     "prop-types": "^15.8.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -13,11 +12,11 @@
     "url-parse": "^1.5.10"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "zip-build": "node scripts/zip-build.mjs",
     "prod": "npm run build && npm run zip-build",
-    "test": "craco test",
+    "test": "react-scripts test",
     "e2e": "cypress open",
     "e2e:headless": "cypress run --headless  --spec '**/url-decoder/**/*.spec.js'",
     "eject": "react-scripts eject",
@@ -37,8 +36,7 @@
     ]
   },
   "devDependencies": {
-    "@tailwindcss/forms": "^0.3.2",
-    "@tailwindcss/postcss7-compat": "^2.1.0",
+    "@tailwindcss/forms": "^0.5.0",
     "@testing-library/cypress": "^8.0.2",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.0",
@@ -52,7 +50,7 @@
     "@types/testing-library__cypress": "^5.0.9",
     "@types/url-parse": "^1.4.8",
     "adm-zip": "^0.5.9",
-    "autoprefixer": "^9.8.8",
+    "autoprefixer": "^10.4.4",
     "cypress": "^9.5.3",
     "eslint": "^8.12.0",
     "eslint-config-prettier": "^8.5.0",
@@ -62,9 +60,9 @@
     "fs-extra": "^10.0.1",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.7",
-    "postcss": "^7.0.39",
+    "postcss": "^8.4.12",
     "prettier": "^2.6.2",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
+    "tailwindcss": "^3.0.23",
     "typescript": "^4.6.3",
     "web-vitals": "^2.1.4"
   },

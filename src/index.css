@@ -10,7 +10,7 @@
   }
   .toast--icon {
     --color-warning: theme('colors.rose.400');
-    --color-success: theme('colors.green.400');
+    --color-success: theme('colors.emerald.400');
   }
 }
 
@@ -104,8 +104,8 @@
 }
 
 body {
-  @apply bg-blueGray-200 font-serif text-base;
+  @apply bg-slate-200 font-serif text-base;
 }
 :is(fieldset:disabled, fieldset:disabled input, fieldset:disabled label) {
-  @apply cursor-not-allowed text-gray-500;
+  @apply cursor-not-allowed text-zinc-500;
 }
