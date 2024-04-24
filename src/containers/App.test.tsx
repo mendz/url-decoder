@@ -6,5 +6,5 @@ test('renders title', () => {
   // const linkElement = screen.getByText(/url decoder/i);
   // expect(linkElement).toBeInTheDocument();
   const textAreas = screen.getAllByRole('textbox');
-  expect(textAreas.length).equal(2);
+  expect(textAreas.length).toBe(2);
 });

@@ -70,5 +70,11 @@
       "prettier --write"
     ],
     "*.{css,html,json,svg}": "prettier --write"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   }
 }
