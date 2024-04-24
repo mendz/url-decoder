@@ -68,7 +68,7 @@ export function useToast(): IUseToast {
           )}
           <p>{description}</p>
           <button
-            className="absolute -top-5 -right-6 text-warmGray-100 h6 w-6"
+            className="absolute -top-5 -right-6 text-stone-100 h6 w-6"
             onClick={() => toast.dismiss(t.id)}
             data-testid="button-toast-close"
           >
