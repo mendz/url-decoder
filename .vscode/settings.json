@@ -14,7 +14,7 @@
   "eslint.alwaysShowStatus": true,
   // tell the ESLint plugin to run on save
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
+    "source.fixAll": "always"
   },
   "cSpell.words": [
     "browserslist",
