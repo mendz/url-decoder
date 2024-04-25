@@ -38,12 +38,10 @@ function SettingsProvider({ children }: Props): JSX.Element {
   const [trimValue, setTrimValue] = useState<TrimValue>(
     settingsDefaultValue.trimValue
   );
-  const [
-    showCurrentUrlButton,
-    setShowCurrentButton,
-  ] = useState<ShowCurrentURLButtonValue>(
-    settingsDefaultValue.showCurrentUrlButton
-  );
+  const [showCurrentUrlButton, setShowCurrentButton] =
+    useState<ShowCurrentURLButtonValue>(
+      settingsDefaultValue.showCurrentUrlButton
+    );
 
   // load at start the values
   useEffect(() => {
@@ -75,17 +73,21 @@ function SettingsProvider({ children }: Props): JSX.Element {
 
   // update the storage values
   useEffect(() => {
-    if (chrome?.storage) {
-      try {
-        saveToStorage(
-          ChromeStorageKeys.COPY_OPTION_VALUE,
-          showCurrentUrlButton
-        );
-        saveToStorage(ChromeStorageKeys.TRIM_OPTION_VALUE, trimValue);
-      } catch (error) {
-        console.error(error);
+    async function saveToStorageAsync() {
+      if (chrome?.storage) {
+        try {
+          await saveToStorage(
+            ChromeStorageKeys.COPY_OPTION_VALUE,
+            showCurrentUrlButton
+          );
+          await saveToStorage(ChromeStorageKeys.TRIM_OPTION_VALUE, trimValue);
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
+
+    saveToStorageAsync();
   }, [showCurrentUrlButton, trimValue]);
 
   return (

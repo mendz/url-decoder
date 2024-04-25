@@ -14,7 +14,7 @@
   "eslint.alwaysShowStatus": true,
   // tell the ESLint plugin to run on save
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
+    "source.fixAll": "always"
   },
   "cSpell.words": [
     "browserslist",
@@ -25,5 +25,11 @@
     "tailwindcss",
     "testid",
     "textareas"
+  ],
+  "json.schemas": [
+    {
+      "fileMatch": ["/manifest.json"],
+      "url": "https://json.schemastore.org/chrome-manifest"
+    }
   ]
 }

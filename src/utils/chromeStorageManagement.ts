@@ -5,44 +5,36 @@ type StorageObject = { [key: string]: any };
  * @param key The key for the data in the storage, need to be unique.
  * @param value The object data to save.
  */
-function saveToStorage(key: string, value: any): Promise<boolean> {
-  return new Promise((resolve) => {
-    chrome.storage.sync.set({ [key]: value }, () => {
-      const err = chrome.runtime.lastError;
-      if (err) new Error(`Save: ${err.message}`);
-
-      resolve(true);
-    });
-  });
+async function saveToStorage(key: string, value: any): Promise<void> {
+  try {
+    await chrome.storage.sync.set({ [key]: value });
+  } catch (error: any) {
+    throw new Error(`Save: ${error?.message}`);
+  }
 }
 
 /**
  * Load data from the sync chrome storage
  * @param key The key of which data need to load.
  */
-function loadFromStorage(key: string): Promise<any> {
-  return new Promise((resolve) => {
-    chrome.storage.sync.get([key], (data: StorageObject) => {
-      const err = chrome.runtime.lastError;
-      if (err) new Error(`Load: ${err.message}`);
-
-      resolve(data[key]);
-    });
-  });
+async function loadFromStorage(key: string): Promise<any> {
+  try {
+    const data: StorageObject = await chrome.storage.sync.get([key]);
+    return data[key];
+  } catch (error: any) {
+    throw new Error(`Load: ${error?.message}`);
+  }
 }
 
 /**
  * Clear data from the sync chrome storage
  */
-function clearStorage(): Promise<boolean> {
-  return new Promise((resolve) => {
-    chrome.storage.sync.clear(() => {
-      const err = chrome.runtime.lastError;
-      if (err) new Error(`Clear: ${err.message}`);
-
-      resolve(true);
-    });
-  });
+async function clearStorage(): Promise<void> {
+  try {
+    await chrome.storage.sync.clear();
+  } catch (error: any) {
+    throw new Error(`Clear: ${error?.message}`);
+  }
 }
 
 export { saveToStorage, loadFromStorage, clearStorage };

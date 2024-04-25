@@ -13,7 +13,8 @@ describe('Toasts', () => {
 
     it('Should show success toast', () => {
       cy.findByTestId('toast').should('not.exist');
-      cy.get('textarea').eq(0).click().type('some text');
+      cy.get('textarea').eq(0).click();
+      cy.get('textarea').eq(0).type('some text');
       cy.findByTestId('button-copy-all').click();
       cy.findByTestId('toast').should('exist');
       cy.findByTestId('toast').should('not.contain.text', 'ERROR');
@@ -29,7 +30,8 @@ describe('Toasts', () => {
     });
 
     it('Should show two toasts success + error', () => {
-      cy.get('textarea').eq(0).click().type('some text');
+      cy.get('textarea').eq(0).click();
+      cy.get('textarea').eq(0).type('some text');
       cy.findByTestId('button-copy-all').click();
       cy.findByTestId('button-clear').click();
       cy.findByTestId('button-copy-all').click();
@@ -55,7 +57,8 @@ describe('Toasts', () => {
     });
 
     it('Should close the first toast', () => {
-      cy.get('textarea').eq(0).click().type('some text');
+      cy.get('textarea').eq(0).click();
+      cy.get('textarea').eq(0).type('some text');
       cy.findByTestId('button-copy-all').click();
       cy.findByTestId('button-clear').click();
       cy.findByTestId('button-copy-all').click();

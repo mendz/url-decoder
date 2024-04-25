@@ -33,5 +33,5 @@ module.exports = {
   env: {
     'cypress/globals': true,
   },
-  ignorePatterns: ['cypress/integration/examples'],
+  ignorePatterns: ['cypress/e2e/examples/**'],
 };

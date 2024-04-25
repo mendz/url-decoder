@@ -157,19 +157,26 @@ export default function useUrls(initialIsDecodeState = true): IUrls {
 
   // componentDidUpdate
   useEffect(() => {
-    if (chrome?.storage) {
-      try {
-        saveToStorage(ChromeStorageKeys.URLS_TO_DECODE, importUrls);
-        saveToStorage(ChromeStorageKeys.DECODED_URLS, urls.displayExportUrls);
-      } catch (error) {
-        console.error(error);
+    async function saveToStorageAsync() {
+      if (chrome?.storage) {
+        try {
+          await saveToStorage(ChromeStorageKeys.URLS_TO_DECODE, importUrls);
+          await saveToStorage(
+            ChromeStorageKeys.DECODED_URLS,
+            urls.displayExportUrls
+          );
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
+
+    saveToStorageAsync();
   }, [urls, importUrls]);
 
-  function clearStorageUrls() {
+  async function clearStorageUrls() {
     if (chrome?.storage) {
-      clearStorage();
+      await clearStorage();
     }
     setImportUrls([]);
     exportUrlsDispatch({

@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 describe('Main Page', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
@@ -26,9 +28,9 @@ describe('Main Page', () => {
     });
 
     it('Should decode', () => {
+      cy.get('textarea').eq(0).click();
       cy.get('textarea')
         .eq(0)
-        .click()
         .type('https://www.google.com/search?q=%D7%91%D7%93%D7%99%D7%A7%D7%94');
       cy.get('textarea')
         .eq(1)
@@ -37,10 +39,8 @@ describe('Main Page', () => {
 
     it('Should encode', () => {
       cy.findByTestId('button-swap').click();
-      cy.get('textarea')
-        .eq(0)
-        .click()
-        .type('https://www.google.com/search?q=בדיקה');
+      cy.get('textarea').eq(0).click();
+      cy.get('textarea').eq(0).type('https://www.google.com/search?q=בדיקה');
       cy.get('textarea')
         .eq(1)
         .should(
@@ -52,9 +52,9 @@ describe('Main Page', () => {
 
   context('Buttons', () => {
     it('Should clear urls', () => {
+      cy.get('textarea').eq(0).click();
       cy.get('textarea')
         .eq(0)
-        .click()
         .type('https://www.google.com/search?q=%D7%91%D7%93%D7%99%D7%A7%D7%94');
       cy.get('textarea').eq(0).invoke('val').should('not.be.empty');
       cy.get('textarea').eq(1).invoke('val').should('not.be.empty');
@@ -64,15 +64,17 @@ describe('Main Page', () => {
     });
 
     it('Should copy urls', () => {
+      cy.get('textarea').eq(0).click();
       cy.get('textarea')
         .eq(0)
-        .click()
         .type('https://www.google.com/search?q=%D7%91%D7%93%D7%99%D7%A7%D7%94');
       cy.findByTestId('button-copy-all').click();
-      cy.window()
-        .its('navigator.clipboard')
-        .invoke('readText')
-        .should('equal', 'https://www.google.com/search?q=בדיקה');
+      cy.window().focus();
+      cy.window().then(async (window) => {
+        const copiedText = await window.navigator.clipboard.readText();
+        window.focus(); // Important: without this the test will fail also in both headed (with focus) and headless mode
+        expect(copiedText).to.equal('https://www.google.com/search?q=בדיקה');
+      });
     });
   });
 });
