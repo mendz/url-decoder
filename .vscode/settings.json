@@ -25,5 +25,11 @@
     "tailwindcss",
     "testid",
     "textareas"
+  ],
+  "json.schemas": [
+    {
+      "fileMatch": ["/manifest.json"],
+      "url": "https://json.schemastore.org/chrome-manifest"
+    }
   ]
 }

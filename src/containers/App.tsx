@@ -13,9 +13,8 @@ import { usePrevious } from '../hooks/usePrevious';
 
 function App(): JSX.Element {
   // this ref is needed for the text selection in the decoded URLs textarea
-  const copyUrlsElementRef: React.RefObject<HTMLTextAreaElement> = useRef<HTMLTextAreaElement>(
-    null
-  );
+  const copyUrlsElementRef: React.RefObject<HTMLTextAreaElement> =
+    useRef<HTMLTextAreaElement>(null);
 
   const { isDecode } = useContext(DecodeContext);
   const {
@@ -100,7 +99,7 @@ function App(): JSX.Element {
     }
   }
 
-  function handleCLickedDecodeCurrent() {
+  async function handleCLickedDecodeCurrent() {
     // To prevent the app crashing when working on localhost
     if (!chrome?.tabs) {
       toast({
@@ -111,28 +110,28 @@ function App(): JSX.Element {
       return;
     }
 
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      // extract first value - tabs[0]
-      const [currentTab] = tabs;
-      const currentTabUrl: string = currentTab.url ?? '';
-
-      // check that the URL is not already exists in state urlsToDecode
-      if (!importUrls.includes(currentTabUrl)) {
-        const currentUrlsToDecode = [...importUrls, currentTabUrl].filter(
-          (url: string) => url.trim().length > 0
-        );
-        updateUrls(currentUrlsToDecode, trimValue, isDecode);
-        toast({
-          description: 'Decoded current tab URL',
-        });
-      } else {
-        toast({
-          description:
-            'The current tab URL is already in text area with the URLs to decode',
-          hasError: true,
-        });
-      }
+    const [currentTab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
     });
+    const currentTabUrl: string = currentTab.url ?? '';
+
+    // check that the URL is not already exists in state urlsToDecode
+    if (!importUrls.includes(currentTabUrl)) {
+      const currentUrlsToDecode = [...importUrls, currentTabUrl].filter(
+        (url: string) => url.trim().length > 0
+      );
+      updateUrls(currentUrlsToDecode, trimValue, isDecode);
+      toast({
+        description: 'Decoded current tab URL',
+      });
+    } else {
+      toast({
+        description:
+          'The current tab URL is already in text area with the URLs to decode',
+        hasError: true,
+      });
+    }
   }
 
   const copyAllButtonText: string = isDecode
