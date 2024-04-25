@@ -69,10 +69,12 @@ describe('Main Page', () => {
         .eq(0)
         .type('https://www.google.com/search?q=%D7%91%D7%93%D7%99%D7%A7%D7%94');
       cy.findByTestId('button-copy-all').click();
-      cy.window()
-        .its('navigator.clipboard')
-        .invoke('readText')
-        .should('equal', 'https://www.google.com/search?q=בדיקה');
+      cy.window().focus();
+      cy.window().then(async (window) => {
+        const copiedText = await window.navigator.clipboard.readText();
+        window.focus(); // Important: without this the test will fail also in both headed (with focus) and headless mode
+        expect(copiedText).to.equal('https://www.google.com/search?q=בדיקה');
+      });
     });
   });
 });

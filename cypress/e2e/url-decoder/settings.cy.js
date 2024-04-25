@@ -89,9 +89,9 @@ describe('Setting Modal', () => {
       cy.get('input#TRIM_DOMAIN').click();
       cy.get('button[type="submit"]').click();
       cy.get('textarea').eq(0).click();
-      cy.get('textarea').type(
-        'https://www.google.com/search?q=%D7%91%D7%93%D7%99%D7%A7%D7%94'
-      );
+      cy.get('textarea')
+        .eq(0)
+        .type('https://www.google.com/search?q=%D7%91%D7%93%D7%99%D7%A7%D7%94');
       cy.get('textarea').eq(1).should('have.text', '/search?q=בדיקה');
     });
 
@@ -100,9 +100,9 @@ describe('Setting Modal', () => {
       cy.get('input#TRIM_PATH').click();
       cy.get('button[type="submit"]').click();
       cy.get('textarea').eq(0).click();
-      cy.get('textarea').type(
-        'https://www.google.com/search?q=%D7%91%D7%93%D7%99%D7%A7%D7%94'
-      );
+      cy.get('textarea')
+        .eq(0)
+        .type('https://www.google.com/search?q=%D7%91%D7%93%D7%99%D7%A7%D7%94');
       cy.get('textarea').eq(1).should('have.text', 'www.google.com');
     });
   });
